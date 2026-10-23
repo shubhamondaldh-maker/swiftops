@@ -1,16 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { 
   Search, 
-  Filter, 
   Eye, 
-  Calendar, 
   ArrowUpDown, 
-  Download, 
-  CheckCircle2, 
-  Clock, 
-  Truck, 
-  XCircle,
-  ShoppingBag
+  ShoppingBag,
+  Filter,
+  CheckCircle2,
+  Clock,
+  Truck,
+  XCircle
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { OrderDetailsModal } from '../components/OrderDetailsModal';
@@ -19,10 +17,9 @@ export const Orders = () => {
   const { orders, updateOrderStatus } = useData();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [sortOrder, setSortOrder] = useState('newest'); // 'newest', 'oldest', 'highest', 'lowest'
+  const [sortOrder, setSortOrder] = useState('newest');
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  // Status badge styles
   const getStatusBadge = (status) => {
     switch (status) {
       case 'pending': return 'badge-pending';
@@ -33,15 +30,10 @@ export const Orders = () => {
     }
   };
 
-  // Filter & Search Logic
   const filteredOrders = useMemo(() => {
     return orders
       .filter((order) => {
-        // Status Filter
-        if (statusFilter !== 'all' && order.status !== statusFilter) {
-          return false;
-        }
-        // Search Term (matches order id, customer name, customer email)
+        if (statusFilter !== 'all' && order.status !== statusFilter) return false;
         if (searchTerm.trim()) {
           const query = searchTerm.toLowerCase();
           const matchesId = order.id.toLowerCase().includes(query);
@@ -60,7 +52,6 @@ export const Orders = () => {
       });
   }, [orders, statusFilter, searchTerm, sortOrder]);
 
-  // Counts for tabs
   const counts = {
     all: orders.length,
     pending: orders.filter((o) => o.status === 'pending').length,
@@ -71,53 +62,57 @@ export const Orders = () => {
 
   return (
     <div>
-      {/* Page Title & Stats */}
+      {/* Editorial Title */}
       <div style={{
         display: 'flex',
         flexWrap: 'wrap',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         justifyContent: 'space-between',
-        gap: '16px',
-        marginBottom: '24px'
+        gap: '20px',
+        marginBottom: '28px'
       }}>
         <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em' }}>
-            Customer Orders
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <span className="eyebrow eyebrow-yellow">02 DISPATCH</span>
+            <span className="eyebrow" style={{ color: 'var(--text-dim)' }}>•</span>
+            <span className="eyebrow">ORDER FULFILLMENT MATRIX</span>
+          </div>
+          <h1 className="font-display" style={{ fontSize: 'clamp(2rem, 3.2vw, 2.8rem)', color: '#fff', lineHeight: 1.1 }}>
+            CUSTOMER <span style={{ color: 'var(--chartreuse-primary)' }}>ORDERS</span>
           </h1>
-          <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Inspect receipts, update delivery states, and search orders across all channels.
-          </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)' }}>Showing</span>
-          <span style={{
-            fontSize: '0.85rem',
-            fontWeight: 700,
-            color: 'var(--chartreuse-primary)',
-            fontFamily: 'var(--font-mono)'
-          }}>
-            {filteredOrders.length} of {orders.length}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          padding: '8px 16px',
+          backgroundColor: 'var(--bg-card)',
+          borderRadius: 'var(--radius-pill)',
+          border: '1px solid var(--border-subtle)'
+        }}>
+          <span className="eyebrow" style={{ color: 'var(--text-dim)' }}>FILTERED:</span>
+          <span className="font-mono" style={{ fontWeight: 800, color: 'var(--chartreuse-primary)' }}>
+            {filteredOrders.length} / {orders.length}
           </span>
-          <span style={{ fontSize: '0.82rem', color: 'var(--text-dim)' }}>orders</span>
         </div>
       </div>
 
-      {/* Filter Tabs */}
+      {/* Editorial Status Filter Pills */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
+        gap: '10px',
         overflowX: 'auto',
         paddingBottom: '8px',
-        marginBottom: '20px'
+        marginBottom: '24px'
       }}>
         {[
-          { id: 'all', label: 'All Orders', count: counts.all },
-          { id: 'pending', label: 'Pending', count: counts.pending, color: 'var(--chartreuse-primary)' },
-          { id: 'shipped', label: 'Shipped', count: counts.shipped, color: '#00d4ff' },
-          { id: 'delivered', label: 'Delivered', count: counts.delivered, color: '#00e699' },
-          { id: 'cancelled', label: 'Cancelled', count: counts.cancelled, color: 'var(--pink-primary)' }
+          { id: 'all', label: 'ALL ORDERS', count: counts.all },
+          { id: 'pending', label: 'PENDING', count: counts.pending, color: 'var(--chartreuse-primary)' },
+          { id: 'shipped', label: 'SHIPPED', count: counts.shipped, color: '#00d4ff' },
+          { id: 'delivered', label: 'DELIVERED', count: counts.delivered, color: '#00e699' },
+          { id: 'cancelled', label: 'CANCELLED', count: counts.cancelled, color: 'var(--pink-primary)' }
         ].map((tab) => {
           const isActive = statusFilter === tab.id;
           return (
@@ -126,22 +121,26 @@ export const Orders = () => {
               onClick={() => setStatusFilter(tab.id)}
               className="btn btn-sm"
               style={{
-                backgroundColor: isActive ? 'var(--bg-elevated)' : 'transparent',
+                borderRadius: 'var(--radius-pill)',
+                backgroundColor: isActive ? 'var(--pink-primary)' : 'var(--bg-card)',
                 color: isActive ? '#fff' : 'var(--text-muted)',
-                border: isActive ? '1px solid var(--border-strong)' : '1px solid var(--border-subtle)',
-                boxShadow: isActive ? '0 0 14px rgba(255, 42, 133, 0.1)' : 'none'
+                boxShadow: isActive ? 'var(--pink-glow)' : 'none',
+                border: isActive ? '1px solid transparent' : '1px solid var(--border-subtle)',
+                padding: '8px 18px'
               }}
             >
               <span>{tab.label}</span>
-              <span style={{
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                padding: '1px 6px',
-                borderRadius: '999px',
-                backgroundColor: 'var(--bg-base)',
-                color: tab.color || 'var(--text-main)',
-                fontFamily: 'var(--font-mono)'
-              }}>
+              <span 
+                className="font-mono" 
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  padding: '1px 6px',
+                  borderRadius: 'var(--radius-pill)',
+                  backgroundColor: isActive ? 'rgba(0,0,0,0.35)' : 'var(--bg-pitch)',
+                  color: isActive ? '#fff' : (tab.color || '#fff')
+                }}
+              >
                 {tab.count}
               </span>
             </button>
@@ -149,26 +148,25 @@ export const Orders = () => {
         })}
       </div>
 
-      {/* Controls Bar: Search & Sorting */}
-      <div className="card" style={{ padding: '16px 20px', marginBottom: '22px' }}>
+      {/* Search and Sort Toolbar */}
+      <div className="card" style={{ padding: '18px 24px', marginBottom: '24px' }}>
         <div style={{
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '14px'
+          gap: '16px'
         }}>
-          {/* Search Box */}
           <div style={{
             position: 'relative',
-            flex: '1 1 300px',
-            maxWidth: '500px'
+            flex: '1 1 320px',
+            maxWidth: '520px'
           }}>
             <Search 
-              size={17} 
+              size={18} 
               style={{
                 position: 'absolute',
-                left: '12px',
+                left: '16px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 color: 'var(--text-dim)',
@@ -177,29 +175,28 @@ export const Orders = () => {
             />
             <input
               type="text"
-              placeholder="Search by Customer name, email, or Order ID (e.g. ORD-9401)..."
+              placeholder="Search customer, email, or Order ID (e.g. ORD-9401)..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="form-input"
-              style={{ paddingLeft: '38px', height: '42px' }}
+              style={{ paddingLeft: '44px', height: '44px', borderRadius: 'var(--radius-pill)' }}
             />
           </div>
 
-          {/* Sort Dropdown */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <ArrowUpDown size={14} /> Sort By:
+            <span className="eyebrow" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <ArrowUpDown size={14} /> SORT BY:
             </span>
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
               className="form-select"
-              style={{ width: 'auto', padding: '8px 14px', fontSize: '0.82rem' }}
+              style={{ width: 'auto', padding: '10px 16px', borderRadius: 'var(--radius-pill)', fontSize: '0.82rem' }}
             >
-              <option value="newest">Date: Newest First</option>
-              <option value="oldest">Date: Oldest First</option>
-              <option value="highest">Total: Highest First</option>
-              <option value="lowest">Total: Lowest First</option>
+              <option value="newest">DATE: NEWEST FIRST</option>
+              <option value="oldest">DATE: OLDEST FIRST</option>
+              <option value="highest">TOTAL: HIGHEST FIRST</option>
+              <option value="lowest">TOTAL: LOWEST FIRST</option>
             </select>
           </div>
         </div>
@@ -210,25 +207,25 @@ export const Orders = () => {
         <table>
           <thead>
             <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Date</th>
-              <th>Items</th>
-              <th>Total Amount</th>
-              <th>Status</th>
-              <th style={{ textAlign: 'right' }}>Actions</th>
+              <th>ORDER ID</th>
+              <th>CUSTOMER</th>
+              <th>DATE</th>
+              <th>ITEMS</th>
+              <th>TOTAL</th>
+              <th>STATUS</th>
+              <th style={{ textAlign: 'right' }}>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
             {filteredOrders.length === 0 ? (
               <tr>
-                <td colSpan={7} style={{ textAlign: 'center', padding: '48px 20px', color: 'var(--text-dim)' }}>
-                  <ShoppingBag size={36} color="var(--border-strong)" style={{ margin: '0 auto 12px auto' }} />
-                  <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-                    No orders match your filter criteria
+                <td colSpan={7} style={{ textAlign: 'center', padding: '56px 20px', color: 'var(--text-dim)' }}>
+                  <ShoppingBag size={42} color="var(--border-medium)" style={{ margin: '0 auto 14px auto' }} />
+                  <div className="font-display" style={{ fontSize: '1.2rem', color: '#fff' }}>
+                    NO ORDERS MATCHED
                   </div>
-                  <div style={{ fontSize: '0.82rem', marginTop: '4px' }}>
-                    Try searching a different keyword or resetting status filters.
+                  <div style={{ fontSize: '0.85rem', marginTop: '6px', color: 'var(--text-muted)' }}>
+                    Try searching another query or reset the status filters.
                   </div>
                 </td>
               </tr>
@@ -239,45 +236,41 @@ export const Orders = () => {
                   style={{ cursor: 'pointer' }}
                   onClick={() => setSelectedOrder(order)}
                 >
-                  {/* Order ID */}
-                  <td className="mono-num" style={{ fontWeight: 700, color: '#fff' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ color: 'var(--pink-primary)' }}>#</span>
-                      <span>{order.id}</span>
+                  <td className="font-mono" style={{ fontWeight: 800, color: '#fff' }}>
+                    <span style={{ color: 'var(--pink-primary)' }}>#</span>
+                    <span>{order.id}</span>
+                  </td>
+
+                  <td>
+                    <div style={{ fontWeight: 700, color: '#fff' }}>{order.customer.name}</div>
+                    <div className="eyebrow" style={{ fontSize: '0.68rem', marginTop: '2px' }}>
+                      {order.customer.email}
                     </div>
                   </td>
 
-                  {/* Customer */}
-                  <td>
-                    <div style={{ fontWeight: 600, color: '#fff' }}>{order.customer.name}</div>
-                    <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>{order.customer.email}</div>
-                  </td>
-
-                  {/* Date */}
-                  <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                  <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }} className="font-mono">
                     {order.date}
                   </td>
 
-                  {/* Items count */}
                   <td>
                     <span style={{
                       fontSize: '0.78rem',
-                      padding: '2px 8px',
-                      borderRadius: '4px',
-                      backgroundColor: 'var(--bg-base)',
+                      fontWeight: 700,
+                      padding: '3px 10px',
+                      borderRadius: 'var(--radius-pill)',
+                      backgroundColor: 'var(--bg-deep)',
                       border: '1px solid var(--border-subtle)',
-                      color: 'var(--text-muted)'
+                      color: 'var(--text-muted)',
+                      fontFamily: 'var(--font-mono)'
                     }}>
-                      {order.items.reduce((sum, item) => sum + item.quantity, 0)} items
+                      {order.items.reduce((sum, item) => sum + item.quantity, 0)} ITEMS
                     </span>
                   </td>
 
-                  {/* Total */}
-                  <td className="mono-num" style={{ fontWeight: 800, color: 'var(--chartreuse-primary)', fontSize: '0.95rem' }}>
+                  <td className="font-mono" style={{ fontWeight: 800, color: 'var(--chartreuse-primary)', fontSize: '1.05rem' }}>
                     ${Number(order.total).toFixed(2)}
                   </td>
 
-                  {/* Status Dropdown (inline mutation) */}
                   <td onClick={(e) => e.stopPropagation()}>
                     <select
                       value={order.status}
@@ -287,29 +280,27 @@ export const Orders = () => {
                         cursor: 'pointer',
                         outline: 'none',
                         border: '1px solid transparent',
-                        padding: '4px 10px',
+                        padding: '6px 14px',
                         appearance: 'none',
-                        WebkitAppearance: 'none',
                         textAlign: 'center'
                       }}
                       title="Click to update order status"
                     >
-                      <option value="pending" style={{ background: '#111217', color: '#ccff00' }}>PENDING</option>
-                      <option value="shipped" style={{ background: '#111217', color: '#00d4ff' }}>SHIPPED</option>
-                      <option value="delivered" style={{ background: '#111217', color: '#00e699' }}>DELIVERED</option>
-                      <option value="cancelled" style={{ background: '#111217', color: '#ff2a85' }}>CANCELLED</option>
+                      <option value="pending" style={{ background: '#0e0f15', color: '#ccff00' }}>PENDING</option>
+                      <option value="shipped" style={{ background: '#0e0f15', color: '#00d4ff' }}>SHIPPED</option>
+                      <option value="delivered" style={{ background: '#0e0f15', color: '#00e699' }}>DELIVERED</option>
+                      <option value="cancelled" style={{ background: '#0e0f15', color: '#ff1389' }}>CANCELLED</option>
                     </select>
                   </td>
 
-                  {/* View Details button */}
                   <td style={{ textAlign: 'right' }} onClick={(e) => e.stopPropagation()}>
                     <button
                       className="btn btn-outline btn-sm"
                       onClick={() => setSelectedOrder(order)}
-                      style={{ gap: '6px', fontSize: '0.78rem' }}
+                      style={{ borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: '0.75rem' }}
                     >
-                      <Eye size={14} />
-                      <span>Details</span>
+                      <Eye size={13} />
+                      <span>INSPECT</span>
                     </button>
                   </td>
                 </tr>
@@ -319,7 +310,6 @@ export const Orders = () => {
         </table>
       </div>
 
-      {/* Details Modal */}
       {selectedOrder && (
         <OrderDetailsModal
           order={selectedOrder}

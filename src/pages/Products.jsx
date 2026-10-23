@@ -6,9 +6,7 @@ import {
   Trash2, 
   AlertTriangle, 
   Package, 
-  Filter, 
   ArrowUpDown,
-  Tag,
   Check
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
@@ -19,36 +17,24 @@ export const Products = () => {
   const { products, addProduct, updateProduct, deleteProduct, stats } = useData();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
-  const [stockFilter, setStockFilter] = useState('all'); // 'all', 'low-stock', 'in-stock'
+  const [stockFilter, setStockFilter] = useState('all');
   const [sortField, setSortField] = useState('default');
 
-  // Modal states
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [productToEdit, setProductToEdit] = useState(null);
   const [productToDelete, setProductToDelete] = useState(null);
 
-  // Categories list
   const categories = useMemo(() => {
     const set = new Set(products.map((p) => p.category));
     return ['all', ...Array.from(set)];
   }, [products]);
 
-  // Filter & Search Logic
   const filteredProducts = useMemo(() => {
     return products
       .filter((product) => {
-        // Category filter
-        if (categoryFilter !== 'all' && product.category !== categoryFilter) {
-          return false;
-        }
-        // Stock filter
-        if (stockFilter === 'low-stock' && Number(product.stock) >= 10) {
-          return false;
-        }
-        if (stockFilter === 'in-stock' && Number(product.stock) < 10) {
-          return false;
-        }
-        // Search term
+        if (categoryFilter !== 'all' && product.category !== categoryFilter) return false;
+        if (stockFilter === 'low-stock' && Number(product.stock) >= 10) return false;
+        if (stockFilter === 'in-stock' && Number(product.stock) < 10) return false;
         if (searchTerm.trim()) {
           const q = searchTerm.toLowerCase();
           const matchesName = product.name.toLowerCase().includes(q);
@@ -94,69 +80,71 @@ export const Products = () => {
 
   return (
     <div>
-      {/* Header with Title and Add Product Action */}
+      {/* Editorial Title & Add Action */}
       <div style={{
         display: 'flex',
         flexWrap: 'wrap',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         justifyContent: 'space-between',
-        gap: '16px',
-        marginBottom: '24px'
+        gap: '20px',
+        marginBottom: '28px'
       }}>
         <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em' }}>
-            Product Inventory
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <span className="eyebrow eyebrow-pink">03 CATALOGUE</span>
+            <span className="eyebrow" style={{ color: 'var(--text-dim)' }}>•</span>
+            <span className="eyebrow">INVENTORY INTELLIGENCE</span>
+          </div>
+          <h1 className="font-display" style={{ fontSize: 'clamp(2rem, 3.2vw, 2.8rem)', color: '#fff', lineHeight: 1.1 }}>
+            PRODUCT <span style={{ color: 'var(--pink-primary)' }}>INVENTORY</span>
           </h1>
-          <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Catalog management, stock levels, and automated low-inventory alerts.
-          </p>
         </div>
 
         <button 
           onClick={handleOpenAddModal}
           className="btn btn-primary"
-          style={{ gap: '8px' }}
+          style={{ padding: '12px 26px', fontSize: '0.85rem' }}
         >
           <Plus size={18} />
-          <span>Add New Product</span>
+          <span>+ ADD NEW PRODUCT</span>
         </button>
       </div>
 
-      {/* Critical Stock Alert Bar (if any low-stock items exist) */}
+      {/* Critical Stock Alert Banner */}
       {stats.lowStockCount > 0 && (
         <div style={{
-          backgroundColor: 'rgba(255, 42, 133, 0.08)',
-          border: '1px solid var(--pink-border)',
-          borderRadius: 'var(--radius-md)',
-          padding: '14px 18px',
-          marginBottom: '20px',
+          backgroundColor: 'rgba(255, 19, 137, 0.1)',
+          border: '1px solid var(--border-pink)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '18px 24px',
+          marginBottom: '24px',
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '12px'
+          gap: '16px',
+          boxShadow: 'var(--pink-glow)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <div style={{
-              width: '32px',
-              height: '32px',
+              width: '40px',
+              height: '40px',
               borderRadius: '50%',
-              backgroundColor: 'var(--pink-subtle)',
-              border: '1px solid var(--pink-primary)',
+              backgroundColor: 'var(--pink-primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: 'var(--pink-primary)',
+              color: '#fff',
               flexShrink: 0
             }}>
-              <AlertTriangle size={18} />
+              <AlertTriangle size={20} />
             </div>
             <div>
-              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>
-                Low Inventory Alert: <span style={{ color: 'var(--pink-primary)' }}>{stats.lowStockCount} items</span> have less than 10 units in stock!
+              <div className="font-display" style={{ fontSize: '1.05rem', color: '#fff' }}>
+                CRITICAL INVENTORY ALERT: <span style={{ color: 'var(--chartreuse-primary)' }}>{stats.lowStockCount} PRODUCTS</span> &lt; 10 UNITS
               </div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                Items below 10 units are highlighted in hot pink to prioritize replenishment.
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                These items require immediate warehouse restocking. Highlighted in hot pink below.
               </div>
             </div>
           </div>
@@ -164,33 +152,33 @@ export const Products = () => {
           <button
             onClick={() => setStockFilter(stockFilter === 'low-stock' ? 'all' : 'low-stock')}
             className={`btn btn-sm ${stockFilter === 'low-stock' ? 'btn-electric' : 'btn-danger'}`}
-            style={{ fontSize: '0.78rem' }}
+            style={{ borderRadius: 'var(--radius-pill)', padding: '8px 18px' }}
           >
-            {stockFilter === 'low-stock' ? 'Show All Products' : 'Filter Low Stock Only'}
+            {stockFilter === 'low-stock' ? 'SHOW ALL CATALOGUE' : 'FILTER LOW STOCK ONLY'}
           </button>
         </div>
       )}
 
-      {/* Controls Bar: Search, Category, Stock, Sort */}
-      <div className="card" style={{ padding: '16px 20px', marginBottom: '22px' }}>
+      {/* Controls Bar */}
+      <div className="card" style={{ padding: '18px 24px', marginBottom: '24px' }}>
         <div style={{
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '14px'
+          gap: '16px'
         }}>
           {/* Search Box */}
           <div style={{
             position: 'relative',
-            flex: '1 1 280px',
-            maxWidth: '450px'
+            flex: '1 1 300px',
+            maxWidth: '480px'
           }}>
             <Search 
-              size={17} 
+              size={18} 
               style={{
                 position: 'absolute',
-                left: '12px',
+                left: '16px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 color: 'var(--text-dim)',
@@ -199,41 +187,39 @@ export const Products = () => {
             />
             <input
               type="text"
-              placeholder="Search products by name, SKU or category..."
+              placeholder="Search by name, SKU or category..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="form-input"
-              style={{ paddingLeft: '38px', height: '42px' }}
+              style={{ paddingLeft: '44px', height: '44px', borderRadius: 'var(--radius-pill)' }}
             />
           </div>
 
-          {/* Category Filter */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '12px' }}>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
               className="form-select"
-              style={{ width: 'auto', padding: '8px 14px', fontSize: '0.82rem' }}
+              style={{ width: 'auto', padding: '10px 16px', borderRadius: 'var(--radius-pill)', fontSize: '0.82rem' }}
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
-                  {cat === 'all' ? 'All Categories' : cat}
+                  {cat === 'all' ? 'ALL CATEGORIES' : cat.toUpperCase()}
                 </option>
               ))}
             </select>
 
-            {/* Sort Field */}
             <select
               value={sortField}
               onChange={(e) => setSortField(e.target.value)}
               className="form-select"
-              style={{ width: 'auto', padding: '8px 14px', fontSize: '0.82rem' }}
+              style={{ width: 'auto', padding: '10px 16px', borderRadius: 'var(--radius-pill)', fontSize: '0.82rem' }}
             >
-              <option value="default">Default Order</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="stock-asc">Stock: Lowest First</option>
-              <option value="stock-desc">Stock: Highest First</option>
+              <option value="default">DEFAULT ORDER</option>
+              <option value="price-asc">PRICE: LOW TO HIGH</option>
+              <option value="price-desc">PRICE: HIGH TO LOW</option>
+              <option value="stock-asc">STOCK: LOWEST FIRST</option>
+              <option value="stock-desc">STOCK: HIGHEST FIRST</option>
             </select>
           </div>
         </div>
@@ -244,24 +230,24 @@ export const Products = () => {
         <table>
           <thead>
             <tr>
-              <th>Product Information</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Stock Status</th>
-              <th>Inventory Level</th>
-              <th style={{ textAlign: 'right' }}>Actions</th>
+              <th>PRODUCT CATALOGUE</th>
+              <th>CATEGORY</th>
+              <th>UNIT PRICE</th>
+              <th>HEALTH STATUS</th>
+              <th>AVAILABLE STOCK</th>
+              <th style={{ textAlign: 'right' }}>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
             {filteredProducts.length === 0 ? (
               <tr>
-                <td colSpan={6} style={{ textAlign: 'center', padding: '48px 20px', color: 'var(--text-dim)' }}>
-                  <Package size={36} color="var(--border-strong)" style={{ margin: '0 auto 12px auto' }} />
-                  <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-                    No products found matching filters
+                <td colSpan={6} style={{ textAlign: 'center', padding: '56px 20px', color: 'var(--text-dim)' }}>
+                  <Package size={42} color="var(--border-medium)" style={{ margin: '0 auto 14px auto' }} />
+                  <div className="font-display" style={{ fontSize: '1.2rem', color: '#fff' }}>
+                    NO PRODUCTS FOUND
                   </div>
-                  <div style={{ fontSize: '0.82rem', marginTop: '4px' }}>
-                    Click "Add New Product" to create one.
+                  <div style={{ fontSize: '0.85rem', marginTop: '6px', color: 'var(--text-muted)' }}>
+                    Add a new item to populate the catalogue.
                   </div>
                 </td>
               </tr>
@@ -273,92 +259,81 @@ export const Products = () => {
                     key={product.id}
                     className={isLowStock ? 'highlight-low-stock' : ''}
                   >
-                    {/* Product Name & SKU */}
                     <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div>
-                          <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.92rem' }}>
-                            {product.name}
-                          </div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <span className="mono-num">ID: {product.id}</span>
-                            {product.sku && <span>• SKU: {product.sku}</span>}
-                          </div>
+                      <div>
+                        <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.98rem' }}>
+                          {product.name}
+                        </div>
+                        <div className="eyebrow" style={{ fontSize: '0.68rem', marginTop: '3px' }}>
+                          <span className="font-mono">ID: {product.id}</span>
+                          {product.sku && <span> • SKU: {product.sku}</span>}
                         </div>
                       </div>
                     </td>
 
-                    {/* Category */}
                     <td>
-                      <span style={{
-                        fontSize: '0.78rem',
-                        padding: '3px 9px',
-                        borderRadius: '6px',
-                        backgroundColor: 'var(--bg-base)',
-                        border: '1px solid var(--border-medium)',
-                        color: 'var(--text-main)'
+                      <span className="eyebrow" style={{
+                        padding: '4px 12px',
+                        borderRadius: 'var(--radius-pill)',
+                        backgroundColor: 'var(--bg-deep)',
+                        border: '1px solid var(--border-subtle)',
+                        color: 'var(--text-muted)'
                       }}>
                         {product.category}
                       </span>
                     </td>
 
-                    {/* Price */}
-                    <td className="mono-num" style={{ fontWeight: 700, fontSize: '0.95rem', color: '#fff' }}>
+                    <td className="font-mono" style={{ fontWeight: 800, fontSize: '1.05rem', color: '#fff' }}>
                       ${Number(product.price).toFixed(2)}
                     </td>
 
-                    {/* Low Stock Warning or In Stock Badge */}
                     <td>
                       {isLowStock ? (
                         <span className="badge badge-low-stock">
                           <AlertTriangle size={12} />
-                          Low Stock (&lt; 10)
+                          LOW STOCK (&lt; 10)
                         </span>
                       ) : (
-                        <span className="badge badge-delivered" style={{ textTransform: 'capitalize' }}>
+                        <span className="badge badge-delivered">
                           <Check size={12} />
-                          Healthy Stock
+                          HEALTHY INVENTORY
                         </span>
                       )}
                     </td>
 
-                    {/* Stock Count */}
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span 
-                          className="mono-num" 
+                          className="font-mono" 
                           style={{ 
-                            fontWeight: 800, 
-                            fontSize: '1rem',
+                            fontWeight: 900, 
+                            fontSize: '1.15rem',
                             color: isLowStock ? 'var(--pink-primary)' : 'var(--chartreuse-primary)' 
                           }}
                         >
                           {product.stock}
                         </span>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>units</span>
+                        <span className="eyebrow" style={{ fontSize: '0.65rem' }}>UNITS</span>
                       </div>
                     </td>
 
-                    {/* Actions: Edit & Delete */}
                     <td style={{ textAlign: 'right' }}>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                         <button
                           className="btn btn-outline btn-sm"
                           onClick={() => handleOpenEditModal(product)}
-                          title="Edit Product"
-                          style={{ padding: '6px 10px' }}
+                          style={{ borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: '0.75rem' }}
                         >
-                          <Edit3 size={14} />
-                          <span>Edit</span>
+                          <Edit3 size={13} />
+                          <span>EDIT</span>
                         </button>
                         <button
                           className="btn btn-danger btn-sm"
                           onClick={() => setProductToDelete(product)}
-                          title="Delete Product"
-                          style={{ padding: '6px 10px' }}
+                          style={{ borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: '0.75rem' }}
                         >
-                          <Trash2 size={14} />
-                          <span>Delete</span>
+                          <Trash2 size={13} />
+                          <span>DELETE</span>
                         </button>
                       </div>
                     </td>
@@ -370,7 +345,6 @@ export const Products = () => {
         </table>
       </div>
 
-      {/* Add / Edit Product Modal */}
       <ProductModal
         isOpen={isProductModalOpen}
         onClose={() => setIsProductModalOpen(false)}
@@ -378,13 +352,12 @@ export const Products = () => {
         productToEdit={productToEdit}
       />
 
-      {/* Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={!!productToDelete}
         onClose={() => setProductToDelete(null)}
         onConfirm={handleDeleteConfirm}
-        title="Delete Product?"
-        message="Are you sure you want to remove this product from inventory? This will delete its listing."
+        title="DELETE PRODUCT FROM CATALOGUE?"
+        message="This action will remove the listing and all inventory records."
         itemName={productToDelete?.name}
       />
     </div>

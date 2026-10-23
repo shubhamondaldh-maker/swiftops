@@ -1,40 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Zap, ShieldCheck, ArrowRight, Sparkles, Terminal, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Search, Menu, Zap, ShieldCheck, Terminal, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import heroArtwork from '../assets/hero_wave.jpg';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setError('');
-    
-    if (!email.trim() && !password.trim()) {
-      // If blank, allow demo autofill or require input
-      setEmail('admin@swiftops.com');
-      setPassword('admin123');
-    }
-
     setIsLoading(true);
     setTimeout(() => {
       login(email || 'admin@swiftops.com', password || 'admin123');
       setIsLoading(false);
       navigate('/');
-    }, 450);
+    }, 400);
   };
 
   const handleDemoFill = () => {
     setEmail('admin@swiftops.com');
-    setPassword('demoPass2026!');
+    setPassword('swiftops2026');
     setIsLoading(true);
     setTimeout(() => {
-      login('admin@swiftops.com', 'demoPass2026!');
+      login('admin@swiftops.com', 'swiftops2026');
       setIsLoading(false);
       navigate('/');
     }, 300);
@@ -43,177 +35,368 @@ export const Login = () => {
   return (
     <div style={{
       minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'var(--bg-deep)',
-      padding: '24px',
+      backgroundColor: 'var(--bg-pitch)',
+      color: '#fff',
       position: 'relative',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column'
     }}>
-      {/* Background Neon Gradients */}
-      <div style={{
-        position: 'absolute',
-        width: '500px',
-        height: '500px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(255, 42, 133, 0.12) 0%, transparent 70%)',
-        top: '-10%',
-        left: '10%',
-        pointerEvents: 'none'
-      }} />
-      <div style={{
-        position: 'absolute',
-        width: '500px',
-        height: '500px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(204, 255, 0, 0.08) 0%, transparent 70%)',
-        bottom: '-10%',
-        right: '10%',
-        pointerEvents: 'none'
-      }} />
-
-      <div style={{
-        width: '100%',
-        maxWidth: '460px',
+      {/* Top Editorial Navbar (Inspired directly by the reference image) */}
+      <header style={{
+        height: '80px',
+        padding: '0 48px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid var(--border-subtle)',
         position: 'relative',
+        zIndex: 20
+      }}>
+        {/* Left hamburger & title */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          <button className="btn btn-ghost btn-icon" style={{ color: '#fff' }} aria-label="Menu">
+            <Menu size={24} />
+          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span className="font-display" style={{ fontSize: '1.25rem', letterSpacing: '-0.02em', color: '#fff' }}>
+              SWIFT<span style={{ color: 'var(--pink-primary)' }}>OPS</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Center Navigation Links */}
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '36px' }} className="desktop-links">
+          {['TELEMETRY', 'DISPATCH', 'CATALOGUE', 'TERMINAL'].map((link, idx) => (
+            <span 
+              key={link}
+              className="eyebrow"
+              style={{ 
+                color: idx === 0 ? '#fff' : 'var(--text-muted)', 
+                cursor: 'pointer',
+                letterSpacing: '0.14em',
+                transition: 'color 0.2s'
+              }}
+            >
+              {link}
+            </span>
+          ))}
+        </nav>
+
+        {/* Right Search & Action */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <button className="btn btn-ghost btn-icon" style={{ color: '#fff' }} aria-label="Search">
+            <Search size={18} />
+          </button>
+          <button 
+            onClick={handleDemoFill}
+            className="btn btn-outline"
+            style={{ 
+              borderRadius: 'var(--radius-pill)', 
+              borderColor: 'var(--pink-primary)', 
+              color: 'var(--pink-primary)',
+              fontSize: '0.78rem',
+              padding: '8px 18px'
+            }}
+          >
+            1-CLICK DEMO
+          </button>
+        </div>
+      </header>
+
+      {/* Main Hero Showcase */}
+      <main style={{
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        position: 'relative',
+        padding: '24px 48px',
         zIndex: 10
       }}>
-        {/* Brand Header */}
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '16px',
-            background: 'linear-gradient(135deg, #111217 0%, #1a1c24 100%)',
-            border: '1px solid var(--border-strong)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 16px auto',
-            boxShadow: '0 0 30px var(--pink-glow)',
-            position: 'relative'
-          }}>
-            <Zap size={30} color="var(--chartreuse-primary)" fill="var(--chartreuse-primary)" />
-            <div style={{
-              position: 'absolute',
-              top: -3,
-              right: -3,
-              width: '11px',
-              height: '11px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--pink-primary)',
-              boxShadow: '0 0 10px var(--pink-primary)'
-            }} />
-          </div>
-
-          <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em' }}>
-            SWIFT<span style={{ color: 'var(--pink-primary)' }}>OPS</span>
+        {/* Giant Background Typography Layers */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          pointerEvents: 'none',
+          padding: '0 48px',
+          zIndex: 1,
+          overflow: 'hidden'
+        }}>
+          <h1 
+            className="font-display" 
+            style={{
+              fontSize: 'clamp(5rem, 16vw, 15rem)',
+              lineHeight: 0.88,
+              letterSpacing: '-0.06em',
+              color: 'var(--pink-primary)',
+              textShadow: '0 0 60px rgba(255, 19, 137, 0.4)',
+              userSelect: 'none'
+            }}
+          >
+            SWIFT
           </h1>
-          <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginTop: '6px' }}>
-            Internal Ecommerce Admin & Ops Control
-          </p>
+          <h1 
+            className="font-display" 
+            style={{
+              fontSize: 'clamp(5rem, 16vw, 15rem)',
+              lineHeight: 0.88,
+              letterSpacing: '-0.06em',
+              color: 'transparent',
+              WebkitTextStroke: '2px #ffffff',
+              opacity: 0.85,
+              userSelect: 'none',
+              marginLeft: 'auto'
+            }}
+          >
+            WAVES
+          </h1>
         </div>
 
-        {/* Login Box */}
-        <div className="card" style={{
-          backgroundColor: 'var(--bg-surface)',
-          borderColor: 'var(--border-medium)',
-          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 42, 133, 0.08)'
+        {/* Center Artwork Integration (Matches the user's reference) */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 'clamp(320px, 42vw, 580px)',
+          height: 'clamp(400px, 68vh, 680px)',
+          zIndex: 2,
+          pointerEvents: 'none',
+          borderRadius: '24px',
+          overflow: 'hidden',
+          boxShadow: '0 30px 100px rgba(0, 0, 0, 0.95), 0 0 80px rgba(255, 19, 137, 0.35)',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
         }}>
-          {/* Quick Demo Access banner */}
-          <div style={{
-            background: 'rgba(204, 255, 0, 0.07)',
-            border: '1px solid rgba(204, 255, 0, 0.25)',
-            borderRadius: 'var(--radius-md)',
-            padding: '12px 14px',
-            marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Terminal size={16} color="var(--chartreuse-primary)" />
-              <span style={{ fontSize: '0.8rem', color: 'var(--chartreuse-primary)', fontWeight: 600 }}>
-                Fake Login Mode: Any email works!
+          <img 
+            src={heroArtwork} 
+            alt="SwiftOps Editorial Hero" 
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              filter: 'contrast(1.15) brightness(1.05)'
+            }} 
+          />
+        </div>
+
+        {/* Left Editorial Text Column (Direct reference match) */}
+        <div style={{
+          position: 'relative',
+          zIndex: 10,
+          maxWidth: '300px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '32px'
+        }} className="hero-left-column">
+          <div>
+            <div className="eyebrow eyebrow-pink" style={{ marginBottom: '6px' }}>
+              SCALE / PEOPLE / CONTROL
+            </div>
+            <div className="eyebrow" style={{ color: 'var(--text-muted)' }}>
+              INTERNAL COMMERCE OPS
+            </div>
+          </div>
+
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.6, maxWidth: '240px' }}>
+            A high-velocity operations cockpit engineered for next-generation digital storefronts.
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <button 
+              onClick={handleDemoFill}
+              className="circle-arrow-btn"
+              title="Click to sign in instantly"
+              aria-label="Explore Now"
+            >
+              <ArrowRight size={20} />
+            </button>
+            <span className="eyebrow" style={{ color: '#fff', letterSpacing: '0.14em' }}>
+              EXPLORE NOW
+            </span>
+          </div>
+        </div>
+
+        {/* Right Editorial Steps Column (01, 02, 03, 04) */}
+        <div style={{
+          position: 'absolute',
+          right: '48px',
+          top: '35%',
+          transform: 'translateY(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          zIndex: 10
+        }} className="hero-steps-column">
+          {[
+            { num: '01', label: 'TELEMETRY', active: true },
+            { num: '02', label: 'DISPATCH', active: false },
+            { num: '03', label: 'CATALOGUE', active: false },
+            { num: '04', label: 'INTELLIGENCE', active: false }
+          ].map((step) => (
+            <div key={step.num} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span 
+                className="font-mono" 
+                style={{
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  color: step.active ? 'var(--pink-primary)' : 'var(--text-dim)'
+                }}
+              >
+                {step.num}
+              </span>
+              <span className="eyebrow" style={{ color: step.active ? '#fff' : 'var(--text-dim)', fontSize: '0.68rem' }}>
+                {step.label}
               </span>
             </div>
-            <button
-              type="button"
-              onClick={handleDemoFill}
-              className="btn btn-sm btn-electric"
-              style={{ fontSize: '0.72rem', padding: '4px 8px' }}
-            >
-              1-Click Demo
-            </button>
-          </div>
+          ))}
+        </div>
 
-          <form onSubmit={handleLogin}>
-            <div className="form-group">
-              <label className="form-label">Work Email</label>
-              <input
-                type="email"
-                className="form-input"
-                placeholder="name@company.com or any email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-
-            <div className="form-group" style={{ marginBottom: '22px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                <label className="form-label" style={{ margin: 0 }}>Password</label>
-                <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>Any value allowed</span>
-              </div>
-              <input
-                type="password"
-                className="form-input"
-                placeholder="Enter any password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isLoading}
-              style={{ width: '100%', padding: '12px', fontSize: '0.95rem' }}
-            >
-              <span>{isLoading ? 'Authenticating...' : 'Sign In to Dashboard'}</span>
-              <ArrowRight size={18} />
-            </button>
-          </form>
-
-          {/* Feature Highlights */}
-          <div style={{
-            marginTop: '24px',
-            paddingTop: '18px',
-            borderTop: '1px solid var(--border-subtle)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px'
+        {/* Center-Right Floating Authentication Card */}
+        <div style={{
+          position: 'relative',
+          zIndex: 15,
+          marginLeft: 'auto',
+          marginRight: '60px',
+          width: '100%',
+          maxWidth: '380px'
+        }} className="hero-login-card">
+          <div className="card" style={{
+            background: 'rgba(10, 11, 16, 0.88)',
+            backdropFilter: 'blur(20px)',
+            borderColor: 'var(--border-pink)',
+            boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(255, 19, 137, 0.25)',
+            padding: '28px'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              <CheckCircle2 size={14} color="var(--chartreuse-primary)" />
-              <span>Realtime telemetry & 7-day revenue charts</span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
+              <div>
+                <span className="eyebrow eyebrow-yellow">01 AUTHENTICATION</span>
+                <h2 className="font-display" style={{ fontSize: '1.35rem', color: '#fff', marginTop: '4px' }}>
+                  OPERATIONS LOGIN
+                </h2>
+              </div>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--pink-subtle)',
+                border: '1px solid var(--pink-primary)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--pink-primary)'
+              }}>
+                <Zap size={16} />
+              </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              <CheckCircle2 size={14} color="var(--chartreuse-primary)" />
-              <span>Order management with instant status transitions</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              <CheckCircle2 size={14} color="var(--chartreuse-primary)" />
-              <span>Product catalog CRUD with low-stock alerts (&lt; 10 items)</span>
+
+            <form onSubmit={handleLogin}>
+              <div className="form-group">
+                <label className="form-label">OPERATOR EMAIL</label>
+                <input
+                  type="email"
+                  className="form-input"
+                  placeholder="admin@swiftops.com (or any email)"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <div className="form-group" style={{ marginBottom: '22px' }}>
+                <label className="form-label">SECURITY KEY</label>
+                <input
+                  type="password"
+                  className="form-input"
+                  placeholder="Enter any password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={isLoading}
+                  style={{ width: '100%', padding: '14px', fontSize: '0.88rem' }}
+                >
+                  <span>{isLoading ? 'ACCESSING...' : 'SIGN IN TO PORTAL'}</span>
+                  <ArrowRight size={16} />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleDemoFill}
+                  className="btn btn-electric"
+                  style={{ width: '100%', padding: '12px', fontSize: '0.82rem' }}
+                >
+                  <Terminal size={15} />
+                  <span>⚡ INSTANT 1-CLICK DEMO</span>
+                </button>
+              </div>
+            </form>
+
+            <div style={{
+              marginTop: '20px',
+              paddingTop: '16px',
+              borderTop: '1px solid var(--border-subtle)',
+              fontSize: '0.72rem',
+              color: 'var(--text-dim)',
+              textAlign: 'center'
+            }}>
+              PROTECTED ENVIRONMENT • SESSION SURVIVES REFRESH
             </div>
           </div>
         </div>
+      </main>
 
-        {/* Footer info */}
-        <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-          SwiftOps Admin Dashboard • Day 1 Challenge Submission
+      {/* Bottom Editorial Banner (Matches bottom right corner of reference) */}
+      <footer style={{
+        height: '70px',
+        padding: '0 48px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderTop: '1px solid var(--border-subtle)',
+        position: 'relative',
+        zIndex: 20
+      }}>
+        <div className="eyebrow" style={{ color: 'var(--text-dim)' }}>
+          DAY 1 SUBMISSION • ECOMMERCE ADMIN DASHBOARD
         </div>
-      </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
+          <div style={{
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            backgroundColor: 'var(--chartreuse-primary)',
+            boxShadow: '0 0 10px var(--chartreuse-primary)'
+          }} />
+          <span className="eyebrow" style={{ color: '#fff', letterSpacing: '0.12em' }}>
+            REAL METRICS • REAL PEOPLE
+          </span>
+        </div>
+      </footer>
+
+      <style>{`
+        @media (max-width: 1024px) {
+          .desktop-links {
+            display: none !important;
+          }
+          .hero-steps-column {
+            display: none !important;
+          }
+          .hero-login-card {
+            margin: 0 auto !important;
+          }
+          .hero-left-column {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

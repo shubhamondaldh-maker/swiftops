@@ -1,52 +1,46 @@
 import React from 'react';
 
-export const StatCard = ({ title, value, subtitle, icon: Icon, colorVariant = 'yellow', trend }) => {
+export const StatCard = ({ step, title, value, subtitle, icon: Icon, colorVariant = 'yellow', trend }) => {
   const isPink = colorVariant === 'pink';
   const accentColor = isPink ? 'var(--pink-primary)' : 'var(--chartreuse-primary)';
-  const glowShadow = isPink ? 'var(--shadow-pink)' : 'var(--shadow-yellow)';
-  const subtleBg = isPink ? 'var(--pink-subtle)' : 'var(--chartreuse-subtle)';
-  const borderCol = isPink ? 'var(--pink-border)' : 'var(--chartreuse-border)';
+  const borderHighlight = isPink ? 'var(--border-pink)' : 'var(--border-yellow)';
 
   return (
     <div 
       className={`card ${isPink ? 'card-glowing-pink' : 'card-glowing-yellow'}`}
       style={{
-        position: 'relative',
-        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        minHeight: '135px'
+        minHeight: '160px',
+        padding: '24px 28px',
+        borderLeft: `4px solid ${accentColor}`,
+        overflow: 'hidden'
       }}
     >
-      {/* Decorative top accent line */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '2px',
-        background: `linear-gradient(90deg, ${accentColor} 0%, transparent 100%)`
-      }} />
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      {/* Top Header: Step Number & Title */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
         <div>
-          <span style={{ 
-            fontSize: '0.8rem', 
-            fontWeight: 700, 
-            color: 'var(--text-muted)', 
-            textTransform: 'uppercase', 
-            letterSpacing: '0.06em' 
-          }}>
-            {title}
-          </span>
-          <div style={{ 
-            fontSize: '1.9rem', 
-            fontWeight: 800, 
-            color: '#fff', 
-            marginTop: '6px',
-            lineHeight: 1.1
-          }} className="mono-num">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            {step && (
+              <span className="font-mono" style={{ fontSize: '0.78rem', fontWeight: 800, color: accentColor }}>
+                {step}
+              </span>
+            )}
+            <span className="eyebrow" style={{ color: 'var(--text-muted)' }}>
+              {title}
+            </span>
+          </div>
+          <div 
+            className="font-display" 
+            style={{ 
+              fontSize: '2.6rem', 
+              color: '#ffffff', 
+              letterSpacing: '-0.04em',
+              lineHeight: 1.1,
+              marginTop: '4px'
+            }}
+          >
             {value}
           </div>
         </div>
@@ -54,36 +48,39 @@ export const StatCard = ({ title, value, subtitle, icon: Icon, colorVariant = 'y
         <div style={{
           width: '44px',
           height: '44px',
-          borderRadius: 'var(--radius-md)',
-          backgroundColor: subtleBg,
-          border: `1px solid ${borderCol}`,
+          borderRadius: '50%',
+          border: `1px solid ${borderHighlight}`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: accentColor,
+          backgroundColor: isPink ? 'var(--pink-subtle)' : 'var(--chartreuse-subtle)',
+          boxShadow: isPink ? 'var(--pink-glow)' : 'var(--chartreuse-glow)',
           flexShrink: 0
         }}>
-          {Icon && <Icon size={22} />}
+          {Icon && <Icon size={20} />}
         </div>
       </div>
 
-      <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+      {/* Footer Subtitle & Trend */}
+      <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-subtle)', paddingTop: '12px' }}>
+        <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>
+          {subtitle}
+        </span>
         {trend && (
-          <span style={{
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            padding: '2px 8px',
-            borderRadius: '4px',
-            backgroundColor: subtleBg,
-            color: accentColor,
-            fontFamily: 'var(--font-mono)'
-          }}>
+          <span 
+            className="eyebrow" 
+            style={{ 
+              color: accentColor,
+              backgroundColor: isPink ? 'var(--pink-subtle)' : 'var(--chartreuse-subtle)',
+              padding: '2px 8px',
+              borderRadius: 'var(--radius-pill)',
+              border: `1px solid ${borderHighlight}`
+            }}
+          >
             {trend}
           </span>
         )}
-        <span style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>
-          {subtitle}
-        </span>
       </div>
     </div>
   );

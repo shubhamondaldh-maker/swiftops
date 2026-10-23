@@ -8,11 +8,10 @@ import {
   Menu, 
   X, 
   RefreshCw, 
-  Sparkles, 
-  AlertTriangle, 
-  Clock, 
   Zap,
-  ExternalLink
+  ArrowRight,
+  ShieldCheck,
+  Search
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
@@ -29,7 +28,7 @@ export const Layout = () => {
     navigate('/login');
   };
 
-  const handleResetData = () => {
+  const handleReset = () => {
     setIsResetting(true);
     resetToMockData();
     setTimeout(() => {
@@ -38,236 +37,50 @@ export const Layout = () => {
   };
 
   const navItems = [
+    { num: '01', name: 'OVERVIEW', path: '/', badge: null },
     { 
-      name: 'Overview', 
-      path: '/', 
-      icon: LayoutDashboard,
-      badge: null
-    },
-    { 
-      name: 'Orders', 
+      num: '02', 
+      name: 'ORDERS', 
       path: '/orders', 
-      icon: ShoppingBag,
-      badge: stats.pendingOrders > 0 ? `${stats.pendingOrders} pending` : null,
-      badgeType: 'pending'
+      badge: stats.pendingOrders > 0 ? `${stats.pendingOrders} PENDING` : null,
+      badgeColor: 'var(--chartreuse-primary)'
     },
     { 
-      name: 'Products', 
+      num: '03', 
+      name: 'PRODUCTS', 
       path: '/products', 
-      icon: Package,
-      badge: stats.lowStockCount > 0 ? `${stats.lowStockCount} low` : null,
-      badgeType: 'low-stock'
+      badge: stats.lowStockCount > 0 ? `${stats.lowStockCount} LOW STOCK` : null,
+      badgeColor: 'var(--pink-primary)'
     }
   ];
 
   return (
-    <div className="app-container">
-      {/* Mobile Backdrop */}
-      {mobileMenuOpen && (
-        <div 
-          className="modal-overlay" 
-          style={{ zIndex: 90 }}
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
+    <div className="app-container" style={{ flexDirection: 'column' }}>
+      {/* High-Impact Editorial Header */}
+      <header style={{
+        height: '76px',
+        backgroundColor: 'rgba(5, 5, 7, 0.95)',
+        backdropFilter: 'blur(20px)',
+        borderBottom: '1px solid var(--border-subtle)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 40px',
+        position: 'sticky',
+        top: 0,
+        zIndex: 100
+      }}>
+        {/* Brand Logo & Editorial Title */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+          <button 
+            className="btn btn-ghost btn-icon mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{ display: 'none', color: '#fff' }}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
 
-      {/* Sidebar */}
-      <aside 
-        style={{
-          width: '260px',
-          backgroundColor: 'var(--bg-surface)',
-          borderRight: '1px solid var(--border-subtle)',
-          display: 'flex',
-          flexDirection: 'column',
-          zIndex: 95,
-          transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-          position: mobileMenuOpen ? 'fixed' : 'relative',
-          top: 0,
-          bottom: 0,
-          left: 0,
-          transform: mobileMenuOpen ? 'translateX(0)' : undefined
-        }}
-        className={mobileMenuOpen ? 'sidebar-mobile-open' : 'sidebar-desktop'}
-      >
-        {/* Brand Header */}
-        <div style={{
-          padding: '24px 20px',
-          borderBottom: '1px solid var(--border-subtle)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '10px',
-              background: 'linear-gradient(135deg, #09090c 0%, #1a1b24 100%)',
-              border: '1px solid var(--border-strong)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 0 15px var(--pink-glow)',
-              position: 'relative'
-            }}>
-              <Zap size={22} color="var(--chartreuse-primary)" fill="var(--chartreuse-primary)" />
-              <div style={{
-                position: 'absolute',
-                top: -2,
-                right: -2,
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--pink-primary)',
-                boxShadow: '0 0 8px var(--pink-primary)'
-              }} />
-            </div>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ fontSize: '1.15rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#fff' }}>
-                  SWIFT<span style={{ color: 'var(--pink-primary)' }}>OPS</span>
-                </span>
-                <span style={{
-                  fontSize: '0.65rem',
-                  fontWeight: 700,
-                  backgroundColor: 'var(--chartreuse-subtle)',
-                  color: 'var(--chartreuse-primary)',
-                  border: '1px solid var(--chartreuse-border)',
-                  borderRadius: '4px',
-                  padding: '1px 5px',
-                  textTransform: 'uppercase'
-                }}>
-                  v1.0
-                </span>
-              </div>
-              <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)', fontWeight: 500 }}>
-                Operations Dashboard
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile Close Button */}
-          {mobileMenuOpen && (
-            <button 
-              className="btn btn-ghost btn-icon"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <X size={20} />
-            </button>
-          )}
-        </div>
-
-        {/* Live Ops Pill */}
-        <div style={{ padding: '14px 18px 8px 18px' }}>
-          <div style={{
-            background: 'rgba(204, 255, 0, 0.05)',
-            border: '1px solid rgba(204, 255, 0, 0.2)',
-            borderRadius: '8px',
-            padding: '8px 12px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--chartreuse-primary)',
-                boxShadow: '0 0 8px var(--chartreuse-primary)'
-              }} />
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--chartreuse-primary)' }}>
-                System Online
-              </span>
-            </div>
-            <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>
-              LOCAL DB
-            </span>
-          </div>
-        </div>
-
-        {/* Nav Links */}
-        <nav style={{ padding: '16px 12px', flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-          <div style={{ 
-            fontSize: '0.7rem', 
-            fontWeight: 700, 
-            color: 'var(--text-dim)', 
-            textTransform: 'uppercase', 
-            letterSpacing: '0.08em',
-            padding: '8px 10px 4px 10px'
-          }}>
-            Store Management
-          </div>
-
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                onClick={() => setMobileMenuOpen(false)}
-                style={({ isActive }) => ({
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '11px 14px',
-                  borderRadius: 'var(--radius-md)',
-                  textDecoration: 'none',
-                  fontSize: '0.9rem',
-                  fontWeight: isActive ? 700 : 500,
-                  transition: 'all 0.15s ease',
-                  backgroundColor: isActive ? 'var(--pink-subtle)' : 'transparent',
-                  color: isActive ? '#fff' : 'var(--text-muted)',
-                  border: isActive ? '1px solid var(--pink-border)' : '1px solid transparent',
-                  boxShadow: isActive ? '0 0 16px rgba(255, 42, 133, 0.15)' : 'none'
-                })}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Icon size={18} color="currentColor" />
-                  <span>{item.name}</span>
-                </div>
-                {item.badge && (
-                  <span 
-                    className={`badge ${item.badgeType === 'low-stock' ? 'badge-low-stock' : 'badge-pending'}`}
-                    style={{ fontSize: '0.68rem', padding: '2px 7px' }}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-              </NavLink>
-            );
-          })}
-
-          <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--border-subtle)' }}>
-            <button
-              onClick={handleResetData}
-              className="btn btn-outline"
-              title="Reset all orders and products back to clean initial mock data"
-              style={{
-                width: '100%',
-                justifyContent: 'flex-start',
-                fontSize: '0.8rem',
-                padding: '8px 12px',
-                color: 'var(--text-muted)',
-                borderColor: 'var(--border-subtle)'
-              }}
-            >
-              <RefreshCw size={14} className={isResetting ? 'spin-anim' : ''} />
-              <span>{isResetting ? 'Resetting Data...' : 'Reset Demo Data'}</span>
-            </button>
-          </div>
-        </nav>
-
-        {/* User Footer Profile */}
-        <div style={{
-          padding: '16px',
-          borderTop: '1px solid var(--border-subtle)',
-          backgroundColor: 'var(--bg-base)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
             <div style={{
               width: '36px',
               height: '36px',
@@ -276,132 +89,182 @@ export const Layout = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 700,
               color: '#fff',
-              fontSize: '0.85rem',
-              boxShadow: '0 0 10px var(--pink-glow)',
+              boxShadow: 'var(--pink-glow)',
               flexShrink: 0
             }}>
-              {user?.name ? user.name.slice(0, 2).toUpperCase() : 'AD'}
+              <Zap size={20} fill="#fff" />
             </div>
-            <div style={{ minWidth: 0 }}>
-              <div style={{
-                fontSize: '0.85rem',
-                fontWeight: 700,
-                color: '#fff',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis'
-              }}>
-                {user?.name || 'Administrator'}
+            <div>
+              <div className="font-display" style={{ fontSize: '1.25rem', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1 }}>
+                SWIFT<span style={{ color: 'var(--pink-primary)' }}>OPS</span>
               </div>
-              <div style={{
-                fontSize: '0.72rem',
-                color: 'var(--chartreuse-primary)',
-                fontWeight: 600,
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis'
-              }}>
-                {user?.role || 'Ops Lead'}
+              <div className="eyebrow" style={{ fontSize: '0.62rem', letterSpacing: '0.14em', color: 'var(--text-dim)', marginTop: '2px' }}>
+                INTERNAL COMMERCE SUITE
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Numbered Editorial Navigation Links (Desktop) */}
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="desktop-nav">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              style={({ isActive }) => ({
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '9px 18px',
+                borderRadius: 'var(--radius-pill)',
+                textDecoration: 'none',
+                transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                backgroundColor: isActive ? 'var(--pink-primary)' : 'transparent',
+                color: isActive ? '#fff' : 'var(--text-muted)',
+                boxShadow: isActive ? 'var(--pink-glow)' : 'none',
+                border: isActive ? '1px solid transparent' : '1px solid transparent'
+              })}
+            >
+              {({ isActive }) => (
+                <>
+                  <span 
+                    className="font-mono" 
+                    style={{ 
+                      fontSize: '0.75rem', 
+                      fontWeight: 700, 
+                      color: isActive ? 'var(--chartreuse-primary)' : 'var(--text-dim)' 
+                    }}
+                  >
+                    {item.num}
+                  </span>
+                  <span className="eyebrow" style={{ color: isActive ? '#fff' : 'inherit', fontSize: '0.78rem' }}>
+                    {item.name}
+                  </span>
+                  {item.badge && (
+                    <span 
+                      style={{
+                        fontSize: '0.65rem',
+                        fontWeight: 800,
+                        padding: '2px 8px',
+                        borderRadius: 'var(--radius-pill)',
+                        backgroundColor: isActive ? 'rgba(0,0,0,0.3)' : 'rgba(255, 19, 137, 0.2)',
+                        color: isActive ? '#fff' : item.badgeColor,
+                        fontFamily: 'var(--font-mono)'
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Right Action Tools: System State, Reset Data, Profile */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '6px 14px',
+            backgroundColor: 'rgba(204, 255, 0, 0.08)',
+            border: '1px solid var(--border-yellow)',
+            borderRadius: 'var(--radius-pill)'
+          }} className="telemetry-pill">
+            <div style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--chartreuse-primary)',
+              boxShadow: '0 0 10px var(--chartreuse-primary)'
+            }} />
+            <span className="eyebrow eyebrow-yellow" style={{ fontSize: '0.68rem' }}>
+              ONLINE • 01 LIVE
+            </span>
           </div>
 
           <button
-            onClick={handleLogout}
-            className="btn btn-ghost btn-icon"
-            title="Log Out"
-            style={{ color: 'var(--text-muted)', flexShrink: 0 }}
+            onClick={handleReset}
+            className="btn btn-outline btn-sm"
+            style={{ borderRadius: 'var(--radius-pill)', fontSize: '0.72rem', padding: '6px 14px' }}
+            title="Reset data back to initial mock state"
           >
-            <LogOut size={18} />
+            <RefreshCw size={13} className={isResetting ? 'spin-anim' : ''} />
+            <span>RESET DATA</span>
           </button>
-        </div>
-      </aside>
 
-      {/* Main Content Area */}
-      <div className="main-content">
-        {/* Top Navbar */}
-        <header style={{
-          height: '64px',
-          backgroundColor: 'var(--bg-surface)',
-          borderBottom: '1px solid var(--border-subtle)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 32px',
-          position: 'sticky',
-          top: 0,
-          zIndex: 80,
-          backdropFilter: 'blur(10px)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            {/* Mobile Hamburger */}
+          {/* User Profile & Logout */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: '6px' }}>
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              border: '2px solid var(--pink-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 800,
+              fontSize: '0.85rem',
+              color: '#fff',
+              backgroundColor: 'var(--bg-card)'
+            }}>
+              {user?.name ? user.name.slice(0, 2).toUpperCase() : 'AD'}
+            </div>
+
             <button
-              className="btn btn-ghost btn-icon mobile-menu-btn"
-              onClick={() => setMobileMenuOpen(true)}
-              style={{ display: 'none' }}
+              onClick={handleLogout}
+              className="btn btn-ghost btn-icon"
+              title="Log Out"
+              style={{ color: 'var(--text-muted)' }}
             >
-              <Menu size={22} />
+              <LogOut size={18} />
             </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-dim)' }}>Ecommerce Ops</span>
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-dim)' }}>/</span>
-              <span style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--chartreuse-primary)' }}>
-                Internal Admin Portal
-              </span>
-            </div>
           </div>
+        </div>
+      </header>
 
-          {/* Quick Metrics & Links */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 12px',
-              backgroundColor: 'var(--bg-base)',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 'var(--radius-md)',
-              fontSize: '0.8rem'
-            }}>
-              <span style={{ color: 'var(--text-muted)' }}>Low Stock Alert:</span>
-              <span style={{ 
-                fontWeight: 700, 
-                color: stats.lowStockCount > 0 ? 'var(--pink-primary)' : 'var(--chartreuse-primary)',
-                fontFamily: 'var(--font-mono)' 
-              }}>
-                {stats.lowStockCount} items
-              </span>
-            </div>
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div style={{
+          backgroundColor: 'var(--bg-card)',
+          borderBottom: '1px solid var(--border-medium)',
+          padding: '20px 30px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+          zIndex: 90
+        }}>
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={() => setMobileMenuOpen(false)}
+              style={({ isActive }) => ({
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px 16px',
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: isActive ? 'var(--pink-primary)' : 'transparent',
+                color: '#fff',
+                textDecoration: 'none'
+              })}
+            >
+              <span className="font-display">{item.num} {item.name}</span>
+              {item.badge && <span className="badge badge-low-stock">{item.badge}</span>}
+            </NavLink>
+          ))}
+        </div>
+      )}
 
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 12px',
-              backgroundColor: 'var(--bg-base)',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 'var(--radius-md)',
-              fontSize: '0.8rem'
-            }}>
-              <span style={{ color: 'var(--text-muted)' }}>Pending:</span>
-              <span style={{ 
-                fontWeight: 700, 
-                color: 'var(--chartreuse-primary)',
-                fontFamily: 'var(--font-mono)' 
-              }}>
-                {stats.pendingOrders}
-              </span>
-            </div>
-          </div>
-        </header>
-
-        {/* Page Content */}
-        <main className="page-container">
+      {/* Main Content Viewport */}
+      <main className="main-content">
+        <div className="page-container">
           <Outlet />
-        </main>
-      </div>
+        </div>
+      </main>
 
       <style>{`
         .spin-anim {
@@ -412,11 +275,14 @@ export const Layout = () => {
           to { transform: rotate(360deg); }
         }
         @media (max-width: 900px) {
-          .sidebar-desktop {
+          .desktop-nav {
             display: none !important;
           }
           .mobile-menu-btn {
             display: inline-flex !important;
+          }
+          .telemetry-pill {
+            display: none !important;
           }
         }
       `}</style>

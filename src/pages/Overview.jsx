@@ -6,10 +6,11 @@ import {
   Clock, 
   AlertTriangle, 
   TrendingUp, 
-  ArrowUpRight, 
+  ArrowRight, 
   Calendar,
   Layers,
-  ChevronRight
+  Zap,
+  ArrowUpRight
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -18,23 +19,19 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer,
-  BarChart,
-  Bar
+  ResponsiveContainer 
 } from 'recharts';
 import { useData } from '../context/DataContext';
 import { StatCard } from '../components/StatCard';
 import { OrderDetailsModal } from '../components/OrderDetailsModal';
+import heroArtwork from '../assets/hero_wave.jpg';
 
 export const Overview = () => {
   const { stats, orders, products, last7DaysStats, updateOrderStatus } = useData();
-  const [chartMode, setChartMode] = useState('revenue'); // 'revenue' or 'orders'
+  const [chartMode, setChartMode] = useState('revenue');
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  // Recent 5 orders
   const recentOrders = orders.slice(0, 5);
-
-  // Low stock products
   const lowStockProducts = products.filter((p) => Number(p.stock) < 10).slice(0, 4);
 
   const getStatusBadge = (status) => {
@@ -51,23 +48,22 @@ export const Overview = () => {
     if (active && payload && payload.length) {
       return (
         <div style={{
-          backgroundColor: 'var(--bg-surface)',
-          border: '1px solid var(--border-strong)',
+          backgroundColor: 'var(--bg-card)',
+          border: '1px solid var(--border-pink)',
           borderRadius: 'var(--radius-md)',
-          padding: '10px 14px',
-          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6)'
+          padding: '12px 16px',
+          boxShadow: 'var(--pink-glow)'
         }}>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+          <div className="eyebrow" style={{ color: 'var(--text-muted)', marginBottom: '4px' }}>
             {label}
           </div>
-          <div style={{ 
-            fontSize: '1rem', 
-            fontWeight: 800, 
+          <div className="font-display" style={{ 
+            fontSize: '1.4rem', 
             color: chartMode === 'revenue' ? 'var(--pink-primary)' : 'var(--chartreuse-primary)' 
-          }} className="mono-num">
+          }}>
             {chartMode === 'revenue' 
               ? `$${payload[0].value.toLocaleString('en-US', { minimumFractionDigits: 2 })}` 
-              : `${payload[0].value} orders`}
+              : `${payload[0].value} ORDERS`}
           </div>
         </div>
       );
@@ -77,115 +73,140 @@ export const Overview = () => {
 
   return (
     <div>
-      {/* Top Welcome Title */}
+      {/* Editorial Hero Telemetry Header (Inspired by Sound Waves layout) */}
       <div style={{
+        position: 'relative',
+        borderRadius: 'var(--radius-xl)',
+        background: 'linear-gradient(135deg, #090a10 0%, #12131d 100%)',
+        border: '1px solid var(--border-subtle)',
+        padding: '36px 44px',
+        marginBottom: '32px',
+        overflow: 'hidden',
         display: 'flex',
-        flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: '16px',
-        marginBottom: '26px'
+        gap: '24px'
       }}>
-        <div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em' }}>
-            Operations Telemetry
+        {/* Subtle background wave art thumbnail */}
+        <div style={{
+          position: 'absolute',
+          right: '5%',
+          top: '-20%',
+          width: '320px',
+          height: '240px',
+          opacity: 0.18,
+          pointerEvents: 'none',
+          backgroundImage: `url(${heroArtwork})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(2px) contrast(1.3)',
+          borderRadius: '24px'
+        }} />
+
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: '650px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+            <span className="eyebrow eyebrow-pink">01 TELEMETRY</span>
+            <span className="eyebrow" style={{ color: 'var(--text-dim)' }}>•</span>
+            <span className="eyebrow eyebrow-yellow">REAL-TIME COMMERCE PIPELINE</span>
+          </div>
+
+          <h1 className="font-display" style={{ fontSize: 'clamp(2rem, 3.5vw, 3.2rem)', lineHeight: 1.05, color: '#fff' }}>
+            OPERATIONS <span style={{ color: 'var(--pink-primary)' }}>CONTROL</span>
           </h1>
-          <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Live performance summary, inventory alerts, and 7-day revenue pipeline.
+
+          <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', marginTop: '10px', lineHeight: 1.5 }}>
+            Automated sales telemetry, customer checkout pipelines, and low-inventory restock triggers.
           </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{
-            fontSize: '0.8rem',
-            color: 'var(--text-dim)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            backgroundColor: 'var(--bg-surface)',
-            padding: '8px 14px',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-subtle)'
-          }}>
-            <Calendar size={14} color="var(--chartreuse-primary)" />
-            <span>Cycle: Last 7 Days</span>
+        {/* Live Cycle Badge */}
+        <div style={{ position: 'relative', zIndex: 2, textAlign: 'right' }} className="overview-cycle-badge">
+          <div className="eyebrow" style={{ color: 'var(--text-dim)', marginBottom: '4px' }}>TELEMETRY WINDOW</div>
+          <div className="font-display" style={{ fontSize: '1.25rem', color: 'var(--chartreuse-primary)' }}>
+            PAST 7 DAYS
+          </div>
+          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+            {orders.length} total orders recorded
           </div>
         </div>
       </div>
 
-      {/* 4 Required Stat Cards */}
+      {/* 4 Stat Cards */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-        gap: '20px',
-        marginBottom: '28px'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+        gap: '24px',
+        marginBottom: '32px'
       }}>
         <StatCard
-          title="Total Revenue"
+          step="01"
+          title="TOTAL REVENUE"
           value={`$${stats.totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-          subtitle="Net completed/active sales"
+          subtitle="Net completed volume"
           icon={DollarSign}
           colorVariant="yellow"
-          trend="+18.4%"
+          trend="+18.4% SURGE"
         />
 
         <StatCard
-          title="Total Orders"
+          step="02"
+          title="TOTAL ORDERS"
           value={stats.totalOrders}
           subtitle="All recorded checkouts"
           icon={ShoppingBag}
           colorVariant="yellow"
-          trend="+12 New"
+          trend="ACTIVE PIPELINE"
         />
 
         <StatCard
-          title="Pending Orders"
+          step="03"
+          title="PENDING ORDERS"
           value={stats.pendingOrders}
-          subtitle="Awaiting fulfillment / dispatch"
+          subtitle="Awaiting fulfillment"
           icon={Clock}
           colorVariant={stats.pendingOrders > 0 ? 'yellow' : 'yellow'}
-          trend="Action Needed"
+          trend="DISPATCH QUEUE"
         />
 
         <StatCard
-          title="Low-Stock Products"
+          step="04"
+          title="LOW-STOCK ALERT"
           value={stats.lowStockCount}
-          subtitle="Units under threshold (< 10)"
+          subtitle="Inventory < 10 units"
           icon={AlertTriangle}
           colorVariant="pink"
-          trend="Restock Alert"
+          trend="ACTION NEEDED"
         />
       </div>
 
       {/* 7-Day Interactive Telemetry Chart */}
-      <div className="card" style={{ marginBottom: '28px', padding: '24px' }}>
+      <div className="card" style={{ marginBottom: '32px', padding: '30px' }}>
         <div style={{
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '16px',
-          marginBottom: '20px'
+          marginBottom: '24px'
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <TrendingUp size={18} color="var(--pink-primary)" />
-              <h2 style={{ fontSize: '1.15rem', color: '#fff' }}>
-                7-Day Sales Telemetry
+              <TrendingUp size={20} color="var(--pink-primary)" />
+              <h2 className="font-display" style={{ fontSize: '1.35rem', color: '#fff' }}>
+                7-DAY SALES VELOCITY
               </h2>
             </div>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-              Daily tracking of ecommerce volume and aggregate order count.
+            <p className="eyebrow" style={{ color: 'var(--text-dim)', marginTop: '4px' }}>
+              REVENUE CURVE AND VOLUME DISPATCH
             </p>
           </div>
 
-          {/* Toggle between Revenue & Orders */}
           <div style={{
             display: 'flex',
-            backgroundColor: 'var(--bg-base)',
+            backgroundColor: 'var(--bg-deep)',
             padding: '4px',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-medium)'
+            borderRadius: 'var(--radius-pill)',
+            border: '1px solid var(--border-subtle)'
           }}>
             <button
               onClick={() => setChartMode('revenue')}
@@ -193,51 +214,50 @@ export const Overview = () => {
               style={{
                 backgroundColor: chartMode === 'revenue' ? 'var(--pink-primary)' : 'transparent',
                 color: chartMode === 'revenue' ? '#fff' : 'var(--text-muted)',
-                boxShadow: chartMode === 'revenue' ? '0 0 12px var(--pink-glow)' : 'none',
-                padding: '6px 14px'
+                boxShadow: chartMode === 'revenue' ? 'var(--pink-glow)' : 'none',
+                borderRadius: 'var(--radius-pill)'
               }}
             >
-              Revenue ($)
+              REVENUE ($)
             </button>
             <button
               onClick={() => setChartMode('orders')}
               className="btn btn-sm"
               style={{
                 backgroundColor: chartMode === 'orders' ? 'var(--chartreuse-primary)' : 'transparent',
-                color: chartMode === 'orders' ? 'var(--bg-deep)' : 'var(--text-muted)',
-                fontWeight: chartMode === 'orders' ? 700 : 500,
-                boxShadow: chartMode === 'orders' ? '0 0 12px var(--chartreuse-glow)' : 'none',
-                padding: '6px 14px'
+                color: chartMode === 'orders' ? 'var(--bg-pitch)' : 'var(--text-muted)',
+                boxShadow: chartMode === 'orders' ? 'var(--chartreuse-glow)' : 'none',
+                borderRadius: 'var(--radius-pill)'
               }}
             >
-              Orders Count
+              ORDERS COUNT
             </button>
           </div>
         </div>
 
         {/* Recharts Area Container */}
-        <div style={{ width: '100%', height: 320 }}>
+        <div style={{ width: '100%', height: 340 }}>
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={last7DaysStats} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
+            <AreaChart data={last7DaysStats} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
               <defs>
-                <linearGradient id="pinkGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ff2a85" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#ff2a85" stopOpacity={0.0} />
+                <linearGradient id="pinkWaveGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#ff1389" stopOpacity={0.45} />
+                  <stop offset="95%" stopColor="#ff1389" stopOpacity={0.0} />
                 </linearGradient>
-                <linearGradient id="yellowGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ccff00" stopOpacity={0.4} />
+                <linearGradient id="yellowWaveGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#ccff00" stopOpacity={0.45} />
                   <stop offset="95%" stopColor="#ccff00" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" />
               <XAxis 
                 dataKey="day" 
-                stroke="#60657e" 
+                stroke="#545768" 
                 fontSize={12} 
                 tickLine={false} 
               />
               <YAxis 
-                stroke="#60657e" 
+                stroke="#545768" 
                 fontSize={12} 
                 tickLine={false}
                 tickFormatter={(val) => chartMode === 'revenue' ? `$${val}` : val}
@@ -247,10 +267,10 @@ export const Overview = () => {
                 <Area 
                   type="monotone" 
                   dataKey="revenue" 
-                  stroke="#ff2a85" 
+                  stroke="#ff1389" 
                   strokeWidth={3}
                   fillOpacity={1} 
-                  fill="url(#pinkGradient)" 
+                  fill="url(#pinkWaveGradient)" 
                 />
               ) : (
                 <Area 
@@ -259,7 +279,7 @@ export const Overview = () => {
                   stroke="#ccff00" 
                   strokeWidth={3}
                   fillOpacity={1} 
-                  fill="url(#yellowGradient)" 
+                  fill="url(#yellowWaveGradient)" 
                 />
               )}
             </AreaChart>
@@ -270,8 +290,8 @@ export const Overview = () => {
       {/* Grid: Recent Orders & Low Stock Highlights */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
-        gap: '24px'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))',
+        gap: '28px'
       }}>
         {/* Recent Orders Card */}
         <div className="card">
@@ -279,16 +299,16 @@ export const Overview = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: '16px'
+            marginBottom: '20px'
           }}>
             <div>
-              <h3 style={{ fontSize: '1.05rem', color: '#fff' }}>Recent Orders</h3>
-              <p style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginTop: '2px' }}>
-                Latest purchase transactions
-              </p>
+              <span className="eyebrow eyebrow-yellow">02 DISPATCH</span>
+              <h3 className="font-display" style={{ fontSize: '1.2rem', color: '#fff', marginTop: '2px' }}>
+                RECENT ORDERS
+              </h3>
             </div>
-            <Link to="/orders" className="btn btn-ghost btn-sm" style={{ color: 'var(--chartreuse-primary)', gap: '4px' }}>
-              <span>View All</span>
+            <Link to="/orders" className="btn btn-ghost btn-sm" style={{ color: 'var(--chartreuse-primary)' }}>
+              <span>VIEW ALL</span>
               <ArrowUpRight size={14} />
             </Link>
           </div>
@@ -297,10 +317,10 @@ export const Overview = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Order</th>
-                  <th>Customer</th>
-                  <th>Total</th>
-                  <th>Status</th>
+                  <th>ORDER</th>
+                  <th>CUSTOMER</th>
+                  <th>TOTAL</th>
+                  <th>STATUS</th>
                 </tr>
               </thead>
               <tbody>
@@ -309,16 +329,15 @@ export const Overview = () => {
                     key={order.id} 
                     onClick={() => setSelectedOrder(order)}
                     style={{ cursor: 'pointer' }}
-                    title="Click to view order details"
                   >
-                    <td className="mono-num" style={{ fontWeight: 700, color: '#fff' }}>
+                    <td className="font-mono" style={{ fontWeight: 700, color: '#fff' }}>
                       {order.id}
                     </td>
                     <td>
                       <div style={{ fontWeight: 600 }}>{order.customer.name}</div>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>{order.date}</div>
+                      <div className="eyebrow" style={{ fontSize: '0.65rem', marginTop: '2px' }}>{order.date}</div>
                     </td>
-                    <td className="mono-num" style={{ fontWeight: 700, color: 'var(--chartreuse-primary)' }}>
+                    <td className="font-mono" style={{ fontWeight: 700, color: 'var(--chartreuse-primary)' }}>
                       ${Number(order.total).toFixed(2)}
                     </td>
                     <td>
@@ -339,82 +358,59 @@ export const Overview = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: '16px'
+            marginBottom: '20px'
           }}>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <h3 style={{ fontSize: '1.05rem', color: '#fff' }}>Low-Stock Watchlist</h3>
-                <span className="badge badge-low-stock" style={{ fontSize: '0.7rem' }}>
-                  Critical
-                </span>
-              </div>
-              <p style={{ fontSize: '0.78rem', color: 'var(--text-dim)', marginTop: '2px' }}>
-                Items with fewer than 10 units in warehouse
-              </p>
+              <span className="eyebrow eyebrow-pink">03 CRITICAL INVENTORY</span>
+              <h3 className="font-display" style={{ fontSize: '1.2rem', color: '#fff', marginTop: '2px' }}>
+                LOW STOCK WATCHLIST
+              </h3>
             </div>
-            <Link to="/products" className="btn btn-ghost btn-sm" style={{ color: 'var(--pink-primary)', gap: '4px' }}>
-              <span>Manage</span>
+            <Link to="/products" className="btn btn-ghost btn-sm" style={{ color: 'var(--pink-primary)' }}>
+              <span>CATALOG</span>
               <ArrowUpRight size={14} />
             </Link>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {lowStockProducts.length === 0 ? (
-              <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-dim)', fontSize: '0.85rem' }}>
-                No low stock alerts. All inventories healthy!
-              </div>
-            ) : (
-              lowStockProducts.map((prod) => (
-                <div 
-                  key={prod.id}
-                  style={{
-                    backgroundColor: 'var(--bg-base)',
-                    border: '1px solid var(--border-subtle)',
-                    borderLeft: '3px solid var(--pink-primary)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: '12px 14px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <div>
-                    <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>
-                      {prod.name}
-                    </div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '2px' }}>
-                      {prod.category} • SKU: {prod.sku}
-                    </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {lowStockProducts.map((prod) => (
+              <div 
+                key={prod.id}
+                style={{
+                  backgroundColor: 'var(--bg-deep)',
+                  border: '1px solid var(--border-subtle)',
+                  borderLeft: '4px solid var(--pink-primary)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '14px 18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#fff' }}>
+                    {prod.name}
                   </div>
-
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      backgroundColor: 'rgba(255, 42, 133, 0.15)',
-                      color: 'var(--pink-primary)',
-                      border: '1px solid var(--pink-border)',
-                      borderRadius: '6px',
-                      padding: '3px 8px',
-                      fontSize: '0.78rem',
-                      fontWeight: 700
-                    }} className="mono-num">
-                      <AlertTriangle size={12} />
-                      {prod.stock} left
-                    </div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '3px' }} className="mono-num">
-                      ${Number(prod.price).toFixed(2)}
-                    </div>
+                  <div className="eyebrow" style={{ fontSize: '0.68rem', marginTop: '2px' }}>
+                    {prod.category} • SKU: {prod.sku}
                   </div>
                 </div>
-              ))
-            )}
+
+                <div style={{ textAlign: 'right' }}>
+                  <div className="badge badge-low-stock">
+                    <AlertTriangle size={12} />
+                    {prod.stock} UNITS LEFT
+                  </div>
+                  <div className="font-mono" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                    ${Number(prod.price).toFixed(2)}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Order Details Modal when clicked */}
       {selectedOrder && (
         <OrderDetailsModal
           order={selectedOrder}
