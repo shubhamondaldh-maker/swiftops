@@ -87,20 +87,21 @@ export const Overview = () => {
         justifyContent: 'space-between',
         gap: '24px'
       }}>
-        {/* Subtle background wave art thumbnail */}
+        {/* Subtle background wave art thumbnail with gentle pulse */}
         <div style={{
           position: 'absolute',
-          right: '5%',
-          top: '-20%',
-          width: '320px',
-          height: '240px',
-          opacity: 0.18,
+          right: '4%',
+          top: '-15%',
+          width: '340px',
+          height: '260px',
+          opacity: 0.2,
           pointerEvents: 'none',
           backgroundImage: `url(${heroArtwork})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          filter: 'blur(2px) contrast(1.3)',
-          borderRadius: '24px'
+          filter: 'blur(1px) contrast(1.2)',
+          borderRadius: '24px',
+          animation: 'pulseGlow 6s ease-in-out infinite alternate'
         }} />
 
         <div style={{ position: 'relative', zIndex: 2, maxWidth: '650px' }}>
@@ -131,7 +132,7 @@ export const Overview = () => {
         </div>
       </div>
 
-      {/* 4 Stat Cards */}
+      {/* 4 Stat Cards with Animated Count-Up & 3D Tilt */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
@@ -141,7 +142,9 @@ export const Overview = () => {
         <StatCard
           step="01"
           title="TOTAL REVENUE"
-          value={`$${stats.totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+          rawNumber={stats.totalRevenue}
+          prefix="$"
+          decimals={2}
           subtitle="Net completed volume"
           icon={DollarSign}
           colorVariant="yellow"
@@ -151,7 +154,7 @@ export const Overview = () => {
         <StatCard
           step="02"
           title="TOTAL ORDERS"
-          value={stats.totalOrders}
+          rawNumber={stats.totalOrders}
           subtitle="All recorded checkouts"
           icon={ShoppingBag}
           colorVariant="yellow"
@@ -161,17 +164,18 @@ export const Overview = () => {
         <StatCard
           step="03"
           title="PENDING ORDERS"
-          value={stats.pendingOrders}
+          rawNumber={stats.pendingOrders}
           subtitle="Awaiting fulfillment"
           icon={Clock}
-          colorVariant={stats.pendingOrders > 0 ? 'yellow' : 'yellow'}
+          colorVariant="yellow"
           trend="DISPATCH QUEUE"
         />
 
         <StatCard
           step="04"
           title="LOW-STOCK ALERT"
-          value={stats.lowStockCount}
+          rawNumber={stats.lowStockCount}
+          suffix=" ITEMS"
           subtitle="Inventory < 10 units"
           icon={AlertTriangle}
           colorVariant="pink"
@@ -215,7 +219,8 @@ export const Overview = () => {
                 backgroundColor: chartMode === 'revenue' ? 'var(--pink-primary)' : 'transparent',
                 color: chartMode === 'revenue' ? '#fff' : 'var(--text-muted)',
                 boxShadow: chartMode === 'revenue' ? 'var(--pink-glow)' : 'none',
-                borderRadius: 'var(--radius-pill)'
+                borderRadius: 'var(--radius-pill)',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
             >
               REVENUE ($)
@@ -227,7 +232,8 @@ export const Overview = () => {
                 backgroundColor: chartMode === 'orders' ? 'var(--chartreuse-primary)' : 'transparent',
                 color: chartMode === 'orders' ? 'var(--bg-pitch)' : 'var(--text-muted)',
                 boxShadow: chartMode === 'orders' ? 'var(--chartreuse-glow)' : 'none',
-                borderRadius: 'var(--radius-pill)'
+                borderRadius: 'var(--radius-pill)',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
             >
               ORDERS COUNT
@@ -241,11 +247,11 @@ export const Overview = () => {
             <AreaChart data={last7DaysStats} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
               <defs>
                 <linearGradient id="pinkWaveGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ff1389" stopOpacity={0.45} />
+                  <stop offset="5%" stopColor="#ff1389" stopOpacity={0.5} />
                   <stop offset="95%" stopColor="#ff1389" stopOpacity={0.0} />
                 </linearGradient>
                 <linearGradient id="yellowWaveGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ccff00" stopOpacity={0.45} />
+                  <stop offset="5%" stopColor="#ccff00" stopOpacity={0.5} />
                   <stop offset="95%" stopColor="#ccff00" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
@@ -384,8 +390,10 @@ export const Overview = () => {
                   padding: '14px 18px',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between'
+                  justifyContent: 'space-between',
+                  transition: 'transform 0.2s ease, border-color 0.2s ease'
                 }}
+                className="hover-lift"
               >
                 <div>
                   <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#fff' }}>

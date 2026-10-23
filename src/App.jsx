@@ -7,6 +7,8 @@ import { Login } from './pages/Login';
 import { Overview } from './pages/Overview';
 import { Orders } from './pages/Orders';
 import { Products } from './pages/Products';
+import { CursorGlow } from './components/CursorGlow';
+import { LiquidWaves } from './components/LiquidWaves';
 
 // Protected Route Guard
 const ProtectedRoute = ({ children }) => {
@@ -30,6 +32,10 @@ export function App() {
   return (
     <AuthProvider>
       <DataProvider>
+        {/* Global Ambient Interactive Motion Elements */}
+        <CursorGlow />
+        <LiquidWaves />
+
         <BrowserRouter>
           <Routes>
             {/* Public Login Route */}
