@@ -7,11 +7,13 @@ import {
   AlertTriangle, 
   Package, 
   ArrowUpDown,
-  Check
+  Check,
+  Sparkles
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { ProductModal } from '../components/ProductModal';
 import { ConfirmModal } from '../components/ConfirmModal';
+import { StockMeter } from '../components/StockMeter';
 
 export const Products = () => {
   const { products, addProduct, updateProduct, deleteProduct, stats } = useData();
@@ -144,7 +146,7 @@ export const Products = () => {
                 CRITICAL INVENTORY ALERT: <span style={{ color: 'var(--chartreuse-primary)' }}>{stats.lowStockCount} PRODUCTS</span> &lt; 10 UNITS
               </div>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                These items require immediate warehouse restocking. Highlighted in hot pink below.
+                These items require immediate warehouse restocking. Highlighted with pulsing energy meters below.
               </div>
             </div>
           </div>
@@ -234,7 +236,7 @@ export const Products = () => {
               <th>CATEGORY</th>
               <th>UNIT PRICE</th>
               <th>HEALTH STATUS</th>
-              <th>AVAILABLE STOCK</th>
+              <th>TELEMETRY STOCK METER</th>
               <th style={{ textAlign: 'right' }}>ACTIONS</th>
             </tr>
           </thead>
@@ -301,20 +303,9 @@ export const Products = () => {
                       )}
                     </td>
 
+                    {/* Futuristic Stock Battery Meter Gauge */}
                     <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span 
-                          className="font-mono" 
-                          style={{ 
-                            fontWeight: 900, 
-                            fontSize: '1.15rem',
-                            color: isLowStock ? 'var(--pink-primary)' : 'var(--chartreuse-primary)' 
-                          }}
-                        >
-                          {product.stock}
-                        </span>
-                        <span className="eyebrow" style={{ fontSize: '0.65rem' }}>UNITS</span>
-                      </div>
+                      <StockMeter stock={product.stock} />
                     </td>
 
                     <td style={{ textAlign: 'right' }}>

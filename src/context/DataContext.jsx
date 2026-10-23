@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 import { initialProducts, initialOrders, last7DaysStats } from '../data/mockData';
 
 const DataContext = createContext(null);
@@ -50,6 +51,17 @@ export const DataProvider = ({ children }) => {
       rating: 5.0
     };
     setProducts((prev) => [productWithId, ...prev]);
+
+    // Neon Confetti Burst!
+    try {
+      confetti({
+        particleCount: 60,
+        spread: 60,
+        origin: { y: 0.7 },
+        colors: ['#ff1389', '#ccff00', '#ffffff', '#00d4ff']
+      });
+    } catch {}
+
     return productWithId;
   };
 
@@ -77,6 +89,18 @@ export const DataProvider = ({ children }) => {
     setOrders((prev) =>
       prev.map((order) => (order.id === orderId ? { ...order, status: newStatus } : order))
     );
+
+    // If marked delivered, trigger reward fireworks!
+    if (newStatus === 'delivered') {
+      try {
+        confetti({
+          particleCount: 90,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#00e699', '#ccff00', '#ff1389', '#ffffff']
+        });
+      } catch {}
+    }
   };
 
   // Reset to Mock Data
@@ -85,6 +109,14 @@ export const DataProvider = ({ children }) => {
     setOrders(initialOrders);
     localStorage.removeItem('swiftops_products');
     localStorage.removeItem('swiftops_orders');
+    try {
+      confetti({
+        particleCount: 40,
+        spread: 50,
+        origin: { y: 0.5 },
+        colors: ['#ff1389', '#ccff00']
+      });
+    } catch {}
   };
 
   // Real-time Calculated Metrics
@@ -93,9 +125,7 @@ export const DataProvider = ({ children }) => {
     .reduce((acc, curr) => acc + (parseFloat(curr.total) || 0), 0);
 
   const totalOrders = orders.length;
-
   const pendingOrders = orders.filter((order) => order.status === 'pending').length;
-
   const lowStockCount = products.filter((p) => Number(p.stock) < 10).length;
 
   return (

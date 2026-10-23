@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { 
-  LayoutDashboard, 
   ShoppingBag, 
   Package, 
   LogOut, 
@@ -11,10 +10,13 @@ import {
   Zap,
   ArrowRight,
   ShieldCheck,
-  Search
+  Search,
+  Clock
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
+import { MarqueeTicker } from './MarqueeTicker';
+import { AudioEqualizer } from './AudioEqualizer';
 
 export const Layout = () => {
   const { user, logout } = useAuth();
@@ -22,6 +24,18 @@ export const Layout = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const [currentTime, setCurrentTime] = useState('');
+
+  // Live real-time seconds clock for ultra-cool cyber feel
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString('en-US', { hour12: false }));
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -56,6 +70,9 @@ export const Layout = () => {
 
   return (
     <div className="app-container" style={{ flexDirection: 'column' }}>
+      {/* Top Kinetic Marquee Ticker */}
+      <MarqueeTicker />
+
       {/* High-Impact Editorial Header */}
       <header style={{
         height: '76px',
@@ -82,8 +99,8 @@ export const Layout = () => {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
-              width: '36px',
-              height: '36px',
+              width: '38px',
+              height: '38px',
               borderRadius: '50%',
               backgroundColor: 'var(--pink-primary)',
               display: 'flex',
@@ -93,7 +110,7 @@ export const Layout = () => {
               boxShadow: 'var(--pink-glow)',
               flexShrink: 0
             }}>
-              <Zap size={20} fill="#fff" />
+              <Zap size={22} fill="#fff" />
             </div>
             <div>
               <div className="font-display" style={{ fontSize: '1.25rem', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1 }}>
@@ -119,7 +136,7 @@ export const Layout = () => {
                 padding: '9px 18px',
                 borderRadius: 'var(--radius-pill)',
                 textDecoration: 'none',
-                transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
                 backgroundColor: isActive ? 'var(--pink-primary)' : 'transparent',
                 color: isActive ? '#fff' : 'var(--text-muted)',
                 boxShadow: isActive ? 'var(--pink-glow)' : 'none',
@@ -132,7 +149,7 @@ export const Layout = () => {
                     className="font-mono" 
                     style={{ 
                       fontSize: '0.75rem', 
-                      fontWeight: 700, 
+                      fontWeight: 800, 
                       color: isActive ? 'var(--chartreuse-primary)' : 'var(--text-dim)' 
                     }}
                   >
@@ -148,7 +165,7 @@ export const Layout = () => {
                         fontWeight: 800,
                         padding: '2px 8px',
                         borderRadius: 'var(--radius-pill)',
-                        backgroundColor: isActive ? 'rgba(0,0,0,0.3)' : 'rgba(255, 19, 137, 0.2)',
+                        backgroundColor: isActive ? 'rgba(0,0,0,0.35)' : 'rgba(255, 19, 137, 0.2)',
                         color: isActive ? '#fff' : item.badgeColor,
                         fontFamily: 'var(--font-mono)'
                       }}
@@ -162,29 +179,31 @@ export const Layout = () => {
           ))}
         </nav>
 
-        {/* Right Action Tools: System State, Reset Data, Profile */}
+        {/* Right Action Tools: Audio Equalizer, Clock, System State, Reset Data, Profile */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          {/* Animated Audio Wave Equalizer */}
+          <div className="desktop-equalizer">
+            <AudioEqualizer />
+          </div>
+
+          {/* Live System Clock */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
-            padding: '6px 14px',
-            backgroundColor: 'rgba(204, 255, 0, 0.08)',
-            border: '1px solid var(--border-yellow)',
-            borderRadius: 'var(--radius-pill)'
-          }} className="telemetry-pill">
-            <div style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--chartreuse-primary)',
-              boxShadow: '0 0 10px var(--chartreuse-primary)'
-            }} />
-            <span className="eyebrow eyebrow-yellow" style={{ fontSize: '0.68rem' }}>
-              ONLINE • 01 LIVE
+            gap: '6px',
+            padding: '6px 12px',
+            backgroundColor: 'var(--bg-deep)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: 'var(--radius-pill)',
+            color: 'var(--text-muted)'
+          }} className="desktop-clock">
+            <Clock size={13} color="var(--chartreuse-primary)" />
+            <span className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 700, color: '#fff' }}>
+              {currentTime}
             </span>
           </div>
 
+          {/* Reset Demo Data Button */}
           <button
             onClick={handleReset}
             className="btn btn-outline btn-sm"
@@ -208,7 +227,8 @@ export const Layout = () => {
               fontWeight: 800,
               fontSize: '0.85rem',
               color: '#fff',
-              backgroundColor: 'var(--bg-card)'
+              backgroundColor: 'var(--bg-card)',
+              boxShadow: 'var(--pink-glow)'
             }}>
               {user?.name ? user.name.slice(0, 2).toUpperCase() : 'AD'}
             </div>
@@ -278,11 +298,14 @@ export const Layout = () => {
           .desktop-nav {
             display: none !important;
           }
+          .desktop-equalizer {
+            display: none !important;
+          }
+          .desktop-clock {
+            display: none !important;
+          }
           .mobile-menu-btn {
             display: inline-flex !important;
-          }
-          .telemetry-pill {
-            display: none !important;
           }
         }
       `}</style>
