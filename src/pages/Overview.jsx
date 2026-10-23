@@ -24,7 +24,6 @@ import {
 import { useData } from '../context/DataContext';
 import { StatCard } from '../components/StatCard';
 import { OrderDetailsModal } from '../components/OrderDetailsModal';
-import heroArtwork from '../assets/hero_wave.jpg';
 
 export const Overview = () => {
   const { stats, orders, products, last7DaysStats, updateOrderStatus } = useData();
@@ -73,11 +72,11 @@ export const Overview = () => {
 
   return (
     <div>
-      {/* Editorial Hero Telemetry Header (Inspired by Sound Waves layout) */}
+      {/* Editorial Hero Telemetry Header with Dynamic Glow Curves */}
       <div style={{
         position: 'relative',
         borderRadius: 'var(--radius-xl)',
-        background: 'linear-gradient(135deg, #090a10 0%, #12131d 100%)',
+        background: 'linear-gradient(135deg, var(--bg-card) 0%, var(--bg-deep) 100%)',
         border: '1px solid var(--border-subtle)',
         padding: '36px 44px',
         marginBottom: '32px',
@@ -87,20 +86,17 @@ export const Overview = () => {
         justifyContent: 'space-between',
         gap: '24px'
       }}>
-        {/* Subtle background wave art thumbnail with gentle pulse */}
+        {/* Dynamic code-controlled wave glow ribbons */}
         <div style={{
           position: 'absolute',
-          right: '4%',
-          top: '-15%',
-          width: '340px',
-          height: '260px',
-          opacity: 0.2,
+          right: '-20px',
+          top: '-40px',
+          width: '380px',
+          height: '280px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, var(--pink-subtle) 0%, var(--chartreuse-subtle) 60%, transparent 80%)',
+          filter: 'blur(35px)',
           pointerEvents: 'none',
-          backgroundImage: `url(${heroArtwork})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'blur(1px) contrast(1.2)',
-          borderRadius: '24px',
           animation: 'pulseGlow 6s ease-in-out infinite alternate'
         }} />
 
@@ -241,18 +237,18 @@ export const Overview = () => {
           </div>
         </div>
 
-        {/* Recharts Area Container */}
+        {/* Recharts Area Container with Theme Dynamic CSS Variable Strokes */}
         <div style={{ width: '100%', height: 340 }}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={last7DaysStats} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
               <defs>
                 <linearGradient id="pinkWaveGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ff1389" stopOpacity={0.5} />
-                  <stop offset="95%" stopColor="#ff1389" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="var(--pink-primary)" stopOpacity={0.5} />
+                  <stop offset="95%" stopColor="var(--pink-primary)" stopOpacity={0.0} />
                 </linearGradient>
                 <linearGradient id="yellowWaveGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ccff00" stopOpacity={0.5} />
-                  <stop offset="95%" stopColor="#ccff00" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="var(--chartreuse-primary)" stopOpacity={0.5} />
+                  <stop offset="95%" stopColor="var(--chartreuse-primary)" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" />
@@ -273,7 +269,7 @@ export const Overview = () => {
                 <Area 
                   type="monotone" 
                   dataKey="revenue" 
-                  stroke="#ff1389" 
+                  stroke="var(--pink-primary)" 
                   strokeWidth={3}
                   fillOpacity={1} 
                   fill="url(#pinkWaveGradient)" 
@@ -282,7 +278,7 @@ export const Overview = () => {
                 <Area 
                   type="monotone" 
                   dataKey="orders" 
-                  stroke="#ccff00" 
+                  stroke="var(--chartreuse-primary)" 
                   strokeWidth={3}
                   fillOpacity={1} 
                   fill="url(#yellowWaveGradient)" 

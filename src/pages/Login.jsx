@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Search, Menu, Zap, Terminal } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { ThemeSelector } from '../components/ThemeSelector';
-import heroArtwork from '../assets/hero_wave.jpg';
+import { DynamicHeroArtwork } from '../components/DynamicHeroArtwork';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -134,7 +134,8 @@ export const Login = () => {
               letterSpacing: '-0.06em',
               color: 'var(--pink-primary)',
               textShadow: 'var(--pink-glow)',
-              userSelect: 'none'
+              userSelect: 'none',
+              transition: 'color 0.4s ease'
             }}
           >
             SWIFT
@@ -156,7 +157,7 @@ export const Login = () => {
           </h1>
         </div>
 
-        {/* Center Artwork Integration - Adjusted to the new Cosmic Luxury style */}
+        {/* Center Generative Real-time Dynamic Code Artwork */}
         <div style={{
           position: 'absolute',
           top: '50%',
@@ -165,22 +166,9 @@ export const Login = () => {
           width: 'clamp(320px, 44vw, 620px)',
           height: 'clamp(380px, 66vh, 660px)',
           zIndex: 2,
-          pointerEvents: 'none',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          boxShadow: '0 30px 100px rgba(0, 0, 0, 0.95), 0 0 80px var(--pink-subtle)',
-          border: '1px solid var(--border-medium)'
+          borderRadius: '24px'
         }}>
-          <img 
-            src={heroArtwork} 
-            alt="SwiftOps Hero Art" 
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              filter: 'contrast(1.12) brightness(1.04)'
-            }} 
-          />
+          <DynamicHeroArtwork />
         </div>
 
         {/* Left Editorial Text Column */}
@@ -190,7 +178,8 @@ export const Login = () => {
           maxWidth: '300px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '32px'
+          gap: '32px',
+          pointerEvents: 'none'
         }} className="hero-left-column">
           <div>
             <div className="eyebrow eyebrow-pink" style={{ marginBottom: '6px' }}>
@@ -205,7 +194,7 @@ export const Login = () => {
             A high-velocity operations cockpit engineered for next-generation digital storefronts.
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', pointerEvents: 'auto' }}>
             <button 
               onClick={handleDemoFill}
               className="circle-arrow-btn"
@@ -229,7 +218,8 @@ export const Login = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          zIndex: 10
+          zIndex: 10,
+          pointerEvents: 'none'
         }} className="hero-steps-column">
           {[
             { num: '01', label: 'TELEMETRY', active: true },
@@ -243,7 +233,8 @@ export const Login = () => {
                 style={{
                   fontSize: '0.85rem',
                   fontWeight: 700,
-                  color: step.active ? 'var(--pink-primary)' : 'var(--text-dim)'
+                  color: step.active ? 'var(--pink-primary)' : 'var(--text-dim)',
+                  transition: 'color 0.4s ease'
                 }}
               >
                 {step.num}
@@ -265,7 +256,7 @@ export const Login = () => {
           maxWidth: '380px'
         }} className="hero-login-card">
           <div className="card" style={{
-            background: 'rgba(10, 11, 20, 0.9)',
+            background: 'rgba(10, 11, 20, 0.92)',
             backdropFilter: 'blur(20px)',
             borderColor: 'var(--border-pink)',
             boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9), 0 0 50px var(--pink-subtle)',
