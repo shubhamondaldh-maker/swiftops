@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Search, Menu, Zap, Terminal } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { ThemeSelector } from '../components/ThemeSelector';
 import { DynamicHeroArtwork } from '../components/DynamicHeroArtwork';
@@ -57,7 +56,7 @@ export const Login = () => {
         {/* Left hamburger & title */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <button className="btn btn-ghost btn-icon" style={{ color: '#fff' }} aria-label="Menu">
-            <Menu size={24} />
+            <i className="fa-solid fa-bars" style={{ fontSize: '1.2rem' }}></i>
           </button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span className="font-display" style={{ fontSize: '1.25rem', letterSpacing: '-0.02em', color: '#fff' }}>
@@ -86,7 +85,6 @@ export const Login = () => {
 
         {/* Right Search, Theme Selector & Action */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          {/* Live Theme Switcher on Login Page */}
           <ThemeSelector />
 
           <button 
@@ -97,10 +95,14 @@ export const Login = () => {
               borderColor: 'var(--pink-primary)', 
               color: 'var(--pink-primary)',
               fontSize: '0.78rem',
-              padding: '8px 18px'
+              padding: '8px 18px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px'
             }}
           >
-            1-CLICK DEMO
+            <i className="fa-solid fa-bolt-lightning"></i>
+            <span>1-CLICK DEMO</span>
           </button>
         </div>
       </header>
@@ -201,7 +203,7 @@ export const Login = () => {
               title="Click to sign in instantly"
               aria-label="Explore Now"
             >
-              <ArrowRight size={20} />
+              <i className="fa-solid fa-arrow-right"></i>
             </button>
             <span className="eyebrow" style={{ color: '#fff', letterSpacing: '0.14em' }}>
               EXPLORE NOW
@@ -280,7 +282,7 @@ export const Login = () => {
                 justifyContent: 'center',
                 color: 'var(--pink-primary)'
               }}>
-                <Zap size={16} />
+                <i className="fa-solid fa-bolt" style={{ fontSize: '14px' }}></i>
               </div>
             </div>
 
@@ -315,7 +317,7 @@ export const Login = () => {
                   style={{ width: '100%', padding: '14px', fontSize: '0.88rem' }}
                 >
                   <span>{isLoading ? 'ACCESSING...' : 'SIGN IN TO PORTAL'}</span>
-                  <ArrowRight size={16} />
+                  <i className="fa-solid fa-arrow-right" style={{ marginLeft: '6px' }}></i>
                 </button>
 
                 <button
@@ -324,8 +326,8 @@ export const Login = () => {
                   className="btn btn-electric"
                   style={{ width: '100%', padding: '12px', fontSize: '0.82rem' }}
                 >
-                  <Terminal size={15} />
-                  <span>⚡ INSTANT 1-CLICK DEMO</span>
+                  <i className="fa-solid fa-bolt-lightning" style={{ marginRight: '6px' }}></i>
+                  <span>INSTANT 1-CLICK DEMO</span>
                 </button>
               </div>
             </form>

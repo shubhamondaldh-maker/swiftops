@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { X, AlertCircle, Plus, Check } from 'lucide-react';
 
 export const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
   const [formData, setFormData] = useState({
@@ -80,8 +79,8 @@ export const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
           marginBottom: '20px'
         }}>
           <div>
-            <h2 style={{ fontSize: '1.25rem', color: '#fff' }}>
-              {productToEdit ? 'Edit Product' : 'Add New Product'}
+            <h2 className="font-display" style={{ fontSize: '1.25rem', color: '#fff' }}>
+              {productToEdit ? 'EDIT PRODUCT' : 'ADD NEW PRODUCT'}
             </h2>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-dim)', marginTop: '4px' }}>
               {productToEdit 
@@ -90,7 +89,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
             </p>
           </div>
           <button className="btn btn-ghost btn-icon" onClick={onClose} aria-label="Close modal">
-            <X size={20} />
+            <i className="fa-solid fa-xmark" style={{ fontSize: '1.1rem' }}></i>
           </button>
         </div>
 
@@ -101,14 +100,15 @@ export const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
             <input
               type="text"
               className="form-input"
-              placeholder="e.g. Cyberpunk Mechanical Keyboard"
+              placeholder="e.g. Cyberdeck Mechanical Keyboard"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               autoFocus
             />
             {errors.name && (
-              <span style={{ fontSize: '0.75rem', color: 'var(--pink-primary)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                <AlertCircle size={13} /> {errors.name}
+              <span style={{ fontSize: '0.75rem', color: 'var(--pink-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                <i className="fa-solid fa-circle-exclamation"></i>
+                <span>{errors.name}</span>
               </span>
             )}
           </div>
@@ -154,8 +154,9 @@ export const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
                 onChange={(e) => setFormData({ ...formData, price: e.target.value })}
               />
               {errors.price && (
-                <span style={{ fontSize: '0.75rem', color: 'var(--pink-primary)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                  <AlertCircle size={13} /> {errors.price}
+                <span style={{ fontSize: '0.75rem', color: 'var(--pink-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                  <i className="fa-solid fa-circle-exclamation"></i>
+                  <span>{errors.price}</span>
                 </span>
               )}
             </div>
@@ -171,13 +172,15 @@ export const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
                 onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
               />
               {errors.stock && (
-                <span style={{ fontSize: '0.75rem', color: 'var(--pink-primary)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                  <AlertCircle size={13} /> {errors.stock}
+                <span style={{ fontSize: '0.75rem', color: 'var(--pink-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                  <i className="fa-solid fa-circle-exclamation"></i>
+                  <span>{errors.stock}</span>
                 </span>
               )}
               {formData.stock !== '' && Number(formData.stock) < 10 && (
-                <span style={{ fontSize: '0.73rem', color: 'var(--pink-primary)', marginTop: '4px', display: 'block' }}>
-                  ⚠️ Stock is below 10 (Low-stock highlight will trigger)
+                <span style={{ fontSize: '0.73rem', color: 'var(--pink-primary)', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <i className="fa-solid fa-triangle-exclamation"></i>
+                  <span>Stock is below 10 (Low-stock highlight will trigger)</span>
                 </span>
               )}
             </div>
@@ -200,8 +203,8 @@ export const ProductModal = ({ isOpen, onClose, onSave, productToEdit }) => {
             <button type="button" className="btn btn-outline" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="btn btn-primary">
-              {productToEdit ? <Check size={16} /> : <Plus size={16} />}
+            <button type="submit" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              <i className={productToEdit ? 'fa-solid fa-check' : 'fa-solid fa-plus'}></i>
               <span>{productToEdit ? 'Save Changes' : 'Add to Inventory'}</span>
             </button>
           </div>

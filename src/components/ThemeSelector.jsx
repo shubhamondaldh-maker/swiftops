@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Palette, Check } from 'lucide-react';
 
 export const THEMES = [
   {
@@ -71,7 +70,7 @@ export const ThemeSelector = () => {
         <span className="eyebrow" style={{ color: '#fff', fontSize: '0.7rem' }}>
           {activeThemeObj.name}
         </span>
-        <Palette size={13} color="var(--chartreuse-primary)" />
+        <i className="fa-solid fa-palette" style={{ fontSize: '13px', color: 'var(--chartreuse-primary)' }}></i>
       </button>
 
       {isOpen && (
@@ -146,7 +145,7 @@ export const ThemeSelector = () => {
                       </div>
                     </div>
 
-                    {isSelected && <Check size={14} color="var(--pink-primary)" />}
+                    {isSelected && <i className="fa-solid fa-check" style={{ fontSize: '13px', color: 'var(--pink-primary)' }}></i>}
                   </button>
                 );
               })}

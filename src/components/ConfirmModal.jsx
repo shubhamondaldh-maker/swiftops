@@ -1,5 +1,4 @@
 import React from 'react';
-import { AlertTriangle, Trash2, X } from 'lucide-react';
 
 export const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, itemName }) => {
   if (!isOpen) return null;
@@ -12,23 +11,23 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, itemN
         style={{ maxWidth: '440px', textAlign: 'center' }}
       >
         <div style={{
-          width: '54px',
-          height: '54px',
+          width: '56px',
+          height: '56px',
           borderRadius: '50%',
           backgroundColor: 'var(--pink-subtle)',
-          border: '1px solid var(--pink-border)',
+          border: '1px solid var(--border-pink)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: 'var(--pink-primary)',
           margin: '0 auto 16px auto',
-          boxShadow: '0 0 20px var(--pink-glow)'
+          boxShadow: 'var(--pink-glow)'
         }}>
-          <AlertTriangle size={26} />
+          <i className="fa-solid fa-triangle-exclamation" style={{ fontSize: '24px' }}></i>
         </div>
 
-        <h3 style={{ fontSize: '1.2rem', color: '#fff', marginBottom: '8px' }}>
-          {title || 'Confirm Deletion'}
+        <h3 className="font-display" style={{ fontSize: '1.25rem', color: '#fff', marginBottom: '8px' }}>
+          {title || 'CONFIRM DELETION'}
         </h3>
 
         <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '16px', lineHeight: 1.5 }}>
@@ -37,12 +36,12 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, itemN
 
         {itemName && (
           <div style={{
-            background: 'var(--bg-base)',
+            background: 'var(--bg-deep)',
             border: '1px solid var(--border-subtle)',
             borderRadius: 'var(--radius-md)',
             padding: '10px',
-            fontSize: '0.85rem',
-            fontWeight: 700,
+            fontSize: '0.88rem',
+            fontWeight: 800,
             color: 'var(--chartreuse-primary)',
             marginBottom: '24px'
           }}>
@@ -51,7 +50,7 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, itemN
         )}
 
         <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
-          <button className="btn btn-outline" onClick={onClose}>
+          <button className="btn btn-outline" onClick={onClose} style={{ borderRadius: 'var(--radius-pill)', padding: '10px 20px' }}>
             Cancel
           </button>
           <button 
@@ -60,8 +59,9 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, itemN
               onConfirm();
               onClose();
             }}
+            style={{ borderRadius: 'var(--radius-pill)', padding: '10px 22px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
           >
-            <Trash2 size={16} />
+            <i className="fa-solid fa-trash-can"></i>
             <span>Delete Item</span>
           </button>
         </div>

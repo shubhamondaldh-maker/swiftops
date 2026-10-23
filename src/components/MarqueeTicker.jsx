@@ -2,12 +2,12 @@ import React from 'react';
 
 export const MarqueeTicker = () => {
   const items = [
-    '● LIVE TELEMETRY ACTIVE',
-    '⚡ NET REVENUE: $128,450.00 (+18.4% SURGE)',
-    '✦ DISPATCH QUEUE: 38 PENDING',
-    '⚠️ CRITICAL ALERT: 5 INVENTORY ITEMS < 10 UNITS',
-    '● GLOBAL FULFILLMENT: 1,420 COMPLETED CHECKOUTS',
-    '✦ SYSTEM OPERATIONAL • ENCRYPTED NODE 01'
+    { icon: 'fa-solid fa-circle', iconStyle: { fontSize: '7px', color: 'var(--chartreuse-primary)' }, text: 'LIVE TELEMETRY ACTIVE', isAlert: false, isHighlight: false },
+    { icon: 'fa-solid fa-bolt', iconStyle: { color: 'var(--chartreuse-primary)' }, text: 'NET REVENUE: $128,450.00 (+18.4% SURGE)', isAlert: false, isHighlight: true },
+    { icon: 'fa-solid fa-box', iconStyle: { color: 'var(--pink-primary)' }, text: 'DISPATCH QUEUE: 38 PENDING', isAlert: false, isHighlight: false },
+    { icon: 'fa-solid fa-triangle-exclamation', iconStyle: { color: 'var(--pink-primary)' }, text: 'CRITICAL ALERT: 5 INVENTORY ITEMS < 10 UNITS', isAlert: true, isHighlight: false },
+    { icon: 'fa-solid fa-globe', iconStyle: { color: 'var(--chartreuse-primary)' }, text: 'GLOBAL FULFILLMENT: 1,420 COMPLETED CHECKOUTS', isAlert: false, isHighlight: false },
+    { icon: 'fa-solid fa-shield-halved', iconStyle: { color: 'var(--pink-primary)' }, text: 'SYSTEM OPERATIONAL • ENCRYPTED NODE 01', isAlert: false, isHighlight: false }
   ];
 
   return (
@@ -15,7 +15,7 @@ export const MarqueeTicker = () => {
       width: '100%',
       overflow: 'hidden',
       backgroundColor: '#030305',
-      borderBottom: '1px solid rgba(255, 19, 137, 0.25)',
+      borderBottom: '1px solid rgba(139, 92, 246, 0.25)',
       height: '34px',
       display: 'flex',
       alignItems: 'center',
@@ -46,29 +46,26 @@ export const MarqueeTicker = () => {
       }} />
 
       <div className="marquee-track">
-        {[...items, ...items, ...items].map((text, idx) => {
-          const isAlert = text.includes('CRITICAL');
-          const isSurge = text.includes('SURGE');
-          return (
-            <span
-              key={idx}
-              className="font-mono"
-              style={{
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                padding: '0 24px',
-                color: isAlert ? 'var(--pink-primary)' : isSurge ? 'var(--chartreuse-primary)' : 'var(--text-muted)',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              {text}
-            </span>
-          );
-        })}
+        {[...items, ...items, ...items].map((item, idx) => (
+          <span
+            key={idx}
+            className="font-mono"
+            style={{
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              padding: '0 24px',
+              color: item.isAlert ? 'var(--pink-primary)' : item.isHighlight ? 'var(--chartreuse-primary)' : 'var(--text-muted)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            <i className={item.icon} style={item.iconStyle} />
+            <span>{item.text}</span>
+          </span>
+        ))}
       </div>
 
       <style>{`

@@ -1,18 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  DollarSign, 
-  ShoppingBag, 
-  Clock, 
-  AlertTriangle, 
-  TrendingUp, 
-  ArrowRight, 
-  Calendar,
-  Layers,
-  Zap,
-  ArrowUpRight
-} from 'lucide-react';
-import { 
   AreaChart, 
   Area, 
   XAxis, 
@@ -142,7 +130,7 @@ export const Overview = () => {
           prefix="$"
           decimals={2}
           subtitle="Net completed volume"
-          icon={DollarSign}
+          icon={() => <i className="fa-solid fa-dollar-sign" style={{ fontSize: '20px' }}></i>}
           colorVariant="yellow"
           trend="+18.4% SURGE"
         />
@@ -152,7 +140,7 @@ export const Overview = () => {
           title="TOTAL ORDERS"
           rawNumber={stats.totalOrders}
           subtitle="All recorded checkouts"
-          icon={ShoppingBag}
+          icon={() => <i className="fa-solid fa-bag-shopping" style={{ fontSize: '19px' }}></i>}
           colorVariant="yellow"
           trend="ACTIVE PIPELINE"
         />
@@ -162,7 +150,7 @@ export const Overview = () => {
           title="PENDING ORDERS"
           rawNumber={stats.pendingOrders}
           subtitle="Awaiting fulfillment"
-          icon={Clock}
+          icon={() => <i className="fa-solid fa-clock" style={{ fontSize: '19px' }}></i>}
           colorVariant="yellow"
           trend="DISPATCH QUEUE"
         />
@@ -173,7 +161,7 @@ export const Overview = () => {
           rawNumber={stats.lowStockCount}
           suffix=" ITEMS"
           subtitle="Inventory < 10 units"
-          icon={AlertTriangle}
+          icon={() => <i className="fa-solid fa-triangle-exclamation" style={{ fontSize: '19px' }}></i>}
           colorVariant="pink"
           trend="ACTION NEEDED"
         />
@@ -191,7 +179,7 @@ export const Overview = () => {
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <TrendingUp size={20} color="var(--pink-primary)" />
+              <i className="fa-solid fa-chart-line" style={{ fontSize: '18px', color: 'var(--pink-primary)' }}></i>
               <h2 className="font-display" style={{ fontSize: '1.35rem', color: '#fff' }}>
                 7-DAY SALES VELOCITY
               </h2>
@@ -309,9 +297,9 @@ export const Overview = () => {
                 RECENT ORDERS
               </h3>
             </div>
-            <Link to="/orders" className="btn btn-ghost btn-sm" style={{ color: 'var(--chartreuse-primary)' }}>
+            <Link to="/orders" className="btn btn-ghost btn-sm" style={{ color: 'var(--chartreuse-primary)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               <span>VIEW ALL</span>
-              <ArrowUpRight size={14} />
+              <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: '12px' }}></i>
             </Link>
           </div>
 
@@ -368,9 +356,9 @@ export const Overview = () => {
                 LOW STOCK WATCHLIST
               </h3>
             </div>
-            <Link to="/products" className="btn btn-ghost btn-sm" style={{ color: 'var(--pink-primary)' }}>
+            <Link to="/products" className="btn btn-ghost btn-sm" style={{ color: 'var(--pink-primary)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               <span>CATALOG</span>
-              <ArrowUpRight size={14} />
+              <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: '12px' }}></i>
             </Link>
           </div>
 
@@ -402,8 +390,8 @@ export const Overview = () => {
 
                 <div style={{ textAlign: 'right' }}>
                   <div className="badge badge-low-stock">
-                    <AlertTriangle size={12} />
-                    {prod.stock} UNITS LEFT
+                    <i className="fa-solid fa-triangle-exclamation" style={{ fontSize: '11px' }}></i>
+                    <span>{prod.stock} UNITS LEFT</span>
                   </div>
                   <div className="font-mono" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
                     ${Number(prod.price).toFixed(2)}

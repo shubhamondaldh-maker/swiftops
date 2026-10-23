@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { 
-  ShoppingBag, 
-  Package, 
-  LogOut, 
-  Menu, 
-  X, 
-  RefreshCw, 
-  Zap,
-  Clock
-} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
 import { MarqueeTicker } from './MarqueeTicker';
@@ -91,8 +81,9 @@ export const Layout = () => {
             className="btn btn-ghost btn-icon mobile-menu-btn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{ display: 'none', color: '#fff' }}
+            aria-label="Toggle Navigation"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            <i className={mobileMenuOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'} style={{ fontSize: '1.2rem' }}></i>
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -108,7 +99,7 @@ export const Layout = () => {
               boxShadow: 'var(--pink-glow)',
               flexShrink: 0
             }}>
-              <Zap size={22} fill="#fff" />
+              <i className="fa-solid fa-bolt" style={{ fontSize: '18px' }}></i>
             </div>
             <div>
               <div className="font-display" style={{ fontSize: '1.25rem', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1 }}>
@@ -191,14 +182,14 @@ export const Layout = () => {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '6px',
-            padding: '6px 12px',
+            gap: '8px',
+            padding: '6px 14px',
             backgroundColor: 'var(--bg-deep)',
             border: '1px solid var(--border-subtle)',
             borderRadius: 'var(--radius-pill)',
             color: 'var(--text-muted)'
           }} className="desktop-clock">
-            <Clock size={13} color="var(--chartreuse-primary)" />
+            <i className="fa-regular fa-clock" style={{ fontSize: '13px', color: 'var(--chartreuse-primary)' }}></i>
             <span className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 700, color: '#fff' }}>
               {currentTime}
             </span>
@@ -208,10 +199,10 @@ export const Layout = () => {
           <button
             onClick={handleReset}
             className="btn btn-outline btn-sm"
-            style={{ borderRadius: 'var(--radius-pill)', fontSize: '0.72rem', padding: '6px 14px' }}
+            style={{ borderRadius: 'var(--radius-pill)', fontSize: '0.72rem', padding: '6px 14px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             title="Reset data back to initial mock state"
           >
-            <RefreshCw size={13} className={isResetting ? 'spin-anim' : ''} />
+            <i className={`fa-solid fa-arrows-rotate ${isResetting ? 'spin-anim' : ''}`}></i>
             <span>RESET DATA</span>
           </button>
 
@@ -239,8 +230,9 @@ export const Layout = () => {
               className="btn btn-ghost btn-icon"
               title="Log Out"
               style={{ color: 'var(--text-muted)' }}
+              aria-label="Log Out"
             >
-              <LogOut size={18} />
+              <i className="fa-solid fa-arrow-right-from-bracket" style={{ fontSize: '16px' }}></i>
             </button>
           </div>
         </div>

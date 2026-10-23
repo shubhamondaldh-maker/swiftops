@@ -1,15 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  Plus, 
-  Search, 
-  Edit3, 
-  Trash2, 
-  AlertTriangle, 
-  Package, 
-  ArrowUpDown,
-  Check,
-  Sparkles
-} from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { ProductModal } from '../components/ProductModal';
 import { ConfirmModal } from '../components/ConfirmModal';
@@ -105,17 +94,17 @@ export const Products = () => {
         <button 
           onClick={handleOpenAddModal}
           className="btn btn-primary"
-          style={{ padding: '12px 26px', fontSize: '0.85rem' }}
+          style={{ padding: '12px 26px', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
         >
-          <Plus size={18} />
-          <span>+ ADD NEW PRODUCT</span>
+          <i className="fa-solid fa-plus"></i>
+          <span>ADD NEW PRODUCT</span>
         </button>
       </div>
 
       {/* Critical Stock Alert Banner */}
       {stats.lowStockCount > 0 && (
         <div style={{
-          backgroundColor: 'rgba(255, 19, 137, 0.1)',
+          backgroundColor: 'var(--pink-subtle)',
           border: '1px solid var(--border-pink)',
           borderRadius: 'var(--radius-lg)',
           padding: '18px 24px',
@@ -139,7 +128,7 @@ export const Products = () => {
               color: '#fff',
               flexShrink: 0
             }}>
-              <AlertTriangle size={20} />
+              <i className="fa-solid fa-triangle-exclamation" style={{ fontSize: '18px' }}></i>
             </div>
             <div>
               <div className="font-display" style={{ fontSize: '1.05rem', color: '#fff' }}>
@@ -154,9 +143,10 @@ export const Products = () => {
           <button
             onClick={() => setStockFilter(stockFilter === 'low-stock' ? 'all' : 'low-stock')}
             className={`btn btn-sm ${stockFilter === 'low-stock' ? 'btn-electric' : 'btn-danger'}`}
-            style={{ borderRadius: 'var(--radius-pill)', padding: '8px 18px' }}
+            style={{ borderRadius: 'var(--radius-pill)', padding: '8px 18px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
           >
-            {stockFilter === 'low-stock' ? 'SHOW ALL CATALOGUE' : 'FILTER LOW STOCK ONLY'}
+            <i className="fa-solid fa-filter"></i>
+            <span>{stockFilter === 'low-stock' ? 'SHOW ALL CATALOGUE' : 'FILTER LOW STOCK ONLY'}</span>
           </button>
         </div>
       )}
@@ -176,8 +166,8 @@ export const Products = () => {
             flex: '1 1 300px',
             maxWidth: '480px'
           }}>
-            <Search 
-              size={18} 
+            <i 
+              className="fa-solid fa-magnifying-glass"
               style={{
                 position: 'absolute',
                 left: '16px',
@@ -244,7 +234,7 @@ export const Products = () => {
             {filteredProducts.length === 0 ? (
               <tr>
                 <td colSpan={6} style={{ textAlign: 'center', padding: '56px 20px', color: 'var(--text-dim)' }}>
-                  <Package size={42} color="var(--border-medium)" style={{ margin: '0 auto 14px auto' }} />
+                  <i className="fa-solid fa-box-open" style={{ fontSize: '38px', color: 'var(--border-medium)', marginBottom: '14px', display: 'block' }}></i>
                   <div className="font-display" style={{ fontSize: '1.2rem', color: '#fff' }}>
                     NO PRODUCTS FOUND
                   </div>
@@ -292,13 +282,13 @@ export const Products = () => {
                     <td>
                       {isLowStock ? (
                         <span className="badge badge-low-stock">
-                          <AlertTriangle size={12} />
-                          LOW STOCK (&lt; 10)
+                          <i className="fa-solid fa-triangle-exclamation"></i>
+                          <span>LOW STOCK (&lt; 10)</span>
                         </span>
                       ) : (
                         <span className="badge badge-delivered">
-                          <Check size={12} />
-                          HEALTHY INVENTORY
+                          <i className="fa-solid fa-circle-check"></i>
+                          <span>HEALTHY INVENTORY</span>
                         </span>
                       )}
                     </td>
@@ -313,17 +303,17 @@ export const Products = () => {
                         <button
                           className="btn btn-outline btn-sm"
                           onClick={() => handleOpenEditModal(product)}
-                          style={{ borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: '0.75rem' }}
+                          style={{ borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                         >
-                          <Edit3 size={13} />
+                          <i className="fa-solid fa-pen-to-square"></i>
                           <span>EDIT</span>
                         </button>
                         <button
                           className="btn btn-danger btn-sm"
                           onClick={() => setProductToDelete(product)}
-                          style={{ borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: '0.75rem' }}
+                          style={{ borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                         >
-                          <Trash2 size={13} />
+                          <i className="fa-solid fa-trash-can"></i>
                           <span>DELETE</span>
                         </button>
                       </div>

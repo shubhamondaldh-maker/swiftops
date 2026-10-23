@@ -1,15 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  Search, 
-  Eye, 
-  ArrowUpDown, 
-  ShoppingBag,
-  Filter,
-  CheckCircle2,
-  Clock,
-  Truck,
-  XCircle
-} from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { OrderDetailsModal } from '../components/OrderDetailsModal';
 
@@ -108,11 +97,11 @@ export const Orders = () => {
         marginBottom: '24px'
       }}>
         {[
-          { id: 'all', label: 'ALL ORDERS', count: counts.all },
-          { id: 'pending', label: 'PENDING', count: counts.pending, color: 'var(--chartreuse-primary)' },
-          { id: 'shipped', label: 'SHIPPED', count: counts.shipped, color: '#00d4ff' },
-          { id: 'delivered', label: 'DELIVERED', count: counts.delivered, color: '#00e699' },
-          { id: 'cancelled', label: 'CANCELLED', count: counts.cancelled, color: 'var(--pink-primary)' }
+          { id: 'all', label: 'ALL ORDERS', count: counts.all, icon: 'fa-solid fa-list' },
+          { id: 'pending', label: 'PENDING', count: counts.pending, color: 'var(--chartreuse-primary)', icon: 'fa-solid fa-clock' },
+          { id: 'shipped', label: 'SHIPPED', count: counts.shipped, color: '#38bdf8', icon: 'fa-solid fa-truck-fast' },
+          { id: 'delivered', label: 'DELIVERED', count: counts.delivered, color: '#10b981', icon: 'fa-solid fa-circle-check' },
+          { id: 'cancelled', label: 'CANCELLED', count: counts.cancelled, color: '#f43f5e', icon: 'fa-solid fa-ban' }
         ].map((tab) => {
           const isActive = statusFilter === tab.id;
           return (
@@ -126,9 +115,13 @@ export const Orders = () => {
                 color: isActive ? '#fff' : 'var(--text-muted)',
                 boxShadow: isActive ? 'var(--pink-glow)' : 'none',
                 border: isActive ? '1px solid transparent' : '1px solid var(--border-subtle)',
-                padding: '8px 18px'
+                padding: '8px 18px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px'
               }}
             >
+              <i className={tab.icon} style={{ fontSize: '11px', opacity: isActive ? 1 : 0.7 }}></i>
               <span>{tab.label}</span>
               <span 
                 className="font-mono" 
@@ -162,8 +155,8 @@ export const Orders = () => {
             flex: '1 1 320px',
             maxWidth: '520px'
           }}>
-            <Search 
-              size={18} 
+            <i 
+              className="fa-solid fa-magnifying-glass"
               style={{
                 position: 'absolute',
                 left: '16px',
@@ -185,7 +178,8 @@ export const Orders = () => {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span className="eyebrow" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <ArrowUpDown size={14} /> SORT BY:
+              <i className="fa-solid fa-arrow-down-short-wide" style={{ fontSize: '13px' }}></i>
+              <span>SORT BY:</span>
             </span>
             <select
               value={sortOrder}
@@ -220,7 +214,7 @@ export const Orders = () => {
             {filteredOrders.length === 0 ? (
               <tr>
                 <td colSpan={7} style={{ textAlign: 'center', padding: '56px 20px', color: 'var(--text-dim)' }}>
-                  <ShoppingBag size={42} color="var(--border-medium)" style={{ margin: '0 auto 14px auto' }} />
+                  <i className="fa-solid fa-box-open" style={{ fontSize: '38px', color: 'var(--border-medium)', marginBottom: '14px', display: 'block' }}></i>
                   <div className="font-display" style={{ fontSize: '1.2rem', color: '#fff' }}>
                     NO ORDERS MATCHED
                   </div>
@@ -286,10 +280,10 @@ export const Orders = () => {
                       }}
                       title="Click to update order status"
                     >
-                      <option value="pending" style={{ background: '#0e0f15', color: '#ccff00' }}>PENDING</option>
-                      <option value="shipped" style={{ background: '#0e0f15', color: '#00d4ff' }}>SHIPPED</option>
-                      <option value="delivered" style={{ background: '#0e0f15', color: '#00e699' }}>DELIVERED</option>
-                      <option value="cancelled" style={{ background: '#0e0f15', color: '#ff1389' }}>CANCELLED</option>
+                      <option value="pending" style={{ background: '#0e0f15', color: 'var(--chartreuse-primary)' }}>PENDING</option>
+                      <option value="shipped" style={{ background: '#0e0f15', color: '#38bdf8' }}>SHIPPED</option>
+                      <option value="delivered" style={{ background: '#0e0f15', color: '#10b981' }}>DELIVERED</option>
+                      <option value="cancelled" style={{ background: '#0e0f15', color: '#f43f5e' }}>CANCELLED</option>
                     </select>
                   </td>
 
@@ -297,9 +291,9 @@ export const Orders = () => {
                     <button
                       className="btn btn-outline btn-sm"
                       onClick={() => setSelectedOrder(order)}
-                      style={{ borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: '0.75rem' }}
+                      style={{ borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                     >
-                      <Eye size={13} />
+                      <i className="fa-solid fa-eye"></i>
                       <span>INSPECT</span>
                     </button>
                   </td>
