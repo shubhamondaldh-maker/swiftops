@@ -8,15 +8,13 @@ import {
   X, 
   RefreshCw, 
   Zap,
-  ArrowRight,
-  ShieldCheck,
-  Search,
   Clock
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
 import { MarqueeTicker } from './MarqueeTicker';
 import { AudioEqualizer } from './AudioEqualizer';
+import { ThemeSelector } from './ThemeSelector';
 
 export const Layout = () => {
   const { user, logout } = useAuth();
@@ -165,7 +163,7 @@ export const Layout = () => {
                         fontWeight: 800,
                         padding: '2px 8px',
                         borderRadius: 'var(--radius-pill)',
-                        backgroundColor: isActive ? 'rgba(0,0,0,0.35)' : 'rgba(255, 19, 137, 0.2)',
+                        backgroundColor: isActive ? 'rgba(0,0,0,0.35)' : 'var(--pink-subtle)',
                         color: isActive ? '#fff' : item.badgeColor,
                         fontFamily: 'var(--font-mono)'
                       }}
@@ -179,8 +177,11 @@ export const Layout = () => {
           ))}
         </nav>
 
-        {/* Right Action Tools: Audio Equalizer, Clock, System State, Reset Data, Profile */}
+        {/* Right Action Tools: Theme Selector, Audio Equalizer, Clock, Reset Data, Profile */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          {/* Live Theme Switcher */}
+          <ThemeSelector />
+
           {/* Animated Audio Wave Equalizer */}
           <div className="desktop-equalizer">
             <AudioEqualizer />
