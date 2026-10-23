@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Search, Menu, Zap, ShieldCheck, Terminal, Sparkles } from 'lucide-react';
+import { ArrowRight, Search, Menu, Zap, Terminal } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { ThemeSelector } from '../components/ThemeSelector';
 import heroArtwork from '../assets/hero_wave.jpg';
 
 export const Login = () => {
@@ -42,7 +43,7 @@ export const Login = () => {
       display: 'flex',
       flexDirection: 'column'
     }}>
-      {/* Top Editorial Navbar (Inspired directly by the reference image) */}
+      {/* Top Editorial Navbar */}
       <header style={{
         height: '80px',
         padding: '0 48px',
@@ -83,11 +84,11 @@ export const Login = () => {
           ))}
         </nav>
 
-        {/* Right Search & Action */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <button className="btn btn-ghost btn-icon" style={{ color: '#fff' }} aria-label="Search">
-            <Search size={18} />
-          </button>
+        {/* Right Search, Theme Selector & Action */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {/* Live Theme Switcher on Login Page */}
+          <ThemeSelector />
+
           <button 
             onClick={handleDemoFill}
             className="btn btn-outline"
@@ -132,7 +133,7 @@ export const Login = () => {
               lineHeight: 0.88,
               letterSpacing: '-0.06em',
               color: 'var(--pink-primary)',
-              textShadow: '0 0 60px rgba(255, 19, 137, 0.4)',
+              textShadow: 'var(--pink-glow)',
               userSelect: 'none'
             }}
           >
@@ -155,34 +156,34 @@ export const Login = () => {
           </h1>
         </div>
 
-        {/* Center Artwork Integration (Matches the user's reference) */}
+        {/* Center Artwork Integration - Adjusted to the new Cosmic Luxury style */}
         <div style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 'clamp(320px, 42vw, 580px)',
-          height: 'clamp(400px, 68vh, 680px)',
+          width: 'clamp(320px, 44vw, 620px)',
+          height: 'clamp(380px, 66vh, 660px)',
           zIndex: 2,
           pointerEvents: 'none',
           borderRadius: '24px',
           overflow: 'hidden',
-          boxShadow: '0 30px 100px rgba(0, 0, 0, 0.95), 0 0 80px rgba(255, 19, 137, 0.35)',
-          border: '1px solid rgba(255, 255, 255, 0.1)'
+          boxShadow: '0 30px 100px rgba(0, 0, 0, 0.95), 0 0 80px var(--pink-subtle)',
+          border: '1px solid var(--border-medium)'
         }}>
           <img 
             src={heroArtwork} 
-            alt="SwiftOps Editorial Hero" 
+            alt="SwiftOps Hero Art" 
             style={{
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              filter: 'contrast(1.15) brightness(1.05)'
+              filter: 'contrast(1.12) brightness(1.04)'
             }} 
           />
         </div>
 
-        {/* Left Editorial Text Column (Direct reference match) */}
+        {/* Left Editorial Text Column */}
         <div style={{
           position: 'relative',
           zIndex: 10,
@@ -219,7 +220,7 @@ export const Login = () => {
           </div>
         </div>
 
-        {/* Right Editorial Steps Column (01, 02, 03, 04) */}
+        {/* Right Editorial Steps Column */}
         <div style={{
           position: 'absolute',
           right: '48px',
@@ -264,10 +265,10 @@ export const Login = () => {
           maxWidth: '380px'
         }} className="hero-login-card">
           <div className="card" style={{
-            background: 'rgba(10, 11, 16, 0.88)',
+            background: 'rgba(10, 11, 20, 0.9)',
             backdropFilter: 'blur(20px)',
             borderColor: 'var(--border-pink)',
-            boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(255, 19, 137, 0.25)',
+            boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9), 0 0 50px var(--pink-subtle)',
             padding: '28px'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
@@ -352,7 +353,7 @@ export const Login = () => {
         </div>
       </main>
 
-      {/* Bottom Editorial Banner (Matches bottom right corner of reference) */}
+      {/* Bottom Editorial Banner */}
       <footer style={{
         height: '70px',
         padding: '0 48px',
@@ -373,7 +374,7 @@ export const Login = () => {
             height: '8px',
             borderRadius: '50%',
             backgroundColor: 'var(--chartreuse-primary)',
-            boxShadow: '0 0 10px var(--chartreuse-primary)'
+            boxShadow: 'var(--chartreuse-glow)'
           }} />
           <span className="eyebrow" style={{ color: '#fff', letterSpacing: '0.12em' }}>
             REAL METRICS • REAL PEOPLE
